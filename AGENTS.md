@@ -81,6 +81,7 @@ pnpm build           # production build (Next.js)
 git add -A && git commit -m "msg"
 git push origin main
 ```
+`pnpm test` compiles TypeScript with `tsc -p tsconfig.test.json` and runs `node --test dist-test`.
 
 ---
 

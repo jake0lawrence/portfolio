@@ -6,7 +6,8 @@
     "export": "next export",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "tsc -p tsconfig.test.json && node --test dist-test"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
