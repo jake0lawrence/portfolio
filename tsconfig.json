@@ -1,5 +1,15 @@
 {
+  // ──────────────────────────────────────────────────────────
+  //  Jake Lawrence – TypeScript / Next.js root config
+  // ──────────────────────────────────────────────────────────
   "compilerOptions": {
+    /* baseUrl + paths  ←─  enables   import "@/foo/bar"   */
+    "baseUrl": ".",                   // MUST be project root
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
+    /* ✨ existing options (unchanged) */
     "typeRoots": ["./types", "./node_modules/@types"],
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -13,16 +23,18 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "target": "ES2017"
+    "target": "ES2017",
+
+    /* Next.js TS plugin (keep) */
+    "plugins": [{ "name": "next" }]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+
+  /* What files to compile / watch */
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }
