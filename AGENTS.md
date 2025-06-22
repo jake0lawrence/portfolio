@@ -101,6 +101,7 @@ git push origin main
 * **Once‑UI**: prefer high‑level primitives (`Column`, `Flex`, `Grid`); colors via design tokens.
 * **Images**: use Next `<Image />` unless inside `next/og` runtime code.
 * **Imports**: absolute (`@/components/…`) thanks to `tsconfig.paths`.
+* OG image routes live in `<page>/og/route.tsx` and use `next/og`'s `ImageResponse`.
 
 ---
 
