@@ -53,3 +53,7 @@ yarn-error.log*
 ###############################################################################
 *.tsbuildinfo
 next-env.d.ts
+
+# test output
+dist-test/
+package.json.bak
