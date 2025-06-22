@@ -1,11 +1,18 @@
 {
   "extends": "./tsconfig.json",
+
   "compilerOptions": {
     "noEmit": false,
     "outDir": "dist-test",
+
+    /* Node test-runner friendly */
     "module": "CommonJS",
     "moduleResolution": "node",
     "types": ["node"]
   },
-  "include": ["tests/**/*.ts"]
+
+  "include": [
+    "src/**/*",
+    "tests/**/*"
+  ]
 }
