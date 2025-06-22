@@ -1,27 +1,22 @@
 import { Logo } from '@once-ui-system/core';
 
 const person = {
-  firstName: 'Selene',
-  lastName: 'Yu',
+  firstName: 'Jake',
+  lastName: 'Lawrence',
   get name() {
     return `${this.firstName} ${this.lastName}`;
   },
-  role: 'Design Engineer',
+  role: 'Developer · Author · Composer',
   avatar: '/images/avatar.jpg',
   email: 'example@gmail.com',
-  location: 'Asia/Jakarta', // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
+  location: 'America/Chicago', // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
   languages: ['English', 'Bahasa'], // optional: Leave the array empty if you don't want to display languages
 };
 
 const newsletter = {
   display: true,
-  title: <>Subscribe to {person.firstName}&rsquo;s Newsletter</>,
-  description: (
-    <>
-      I occasionally write about design, technology, and share thoughts on the intersection of
-      creativity and engineering.
-    </>
-  ),
+  title: 'Stay in the Loop',
+  description: 'Monthly drop of code, essays, and music.',
 };
 
 const social = [
@@ -30,22 +25,22 @@ const social = [
   {
     name: 'GitHub',
     icon: 'github',
-    link: 'https://github.com/once-ui-system/nextjs-starter',
+    link: 'https://github.com/jakelaw-tools',
   },
   {
-    name: 'LinkedIn',
-    icon: 'linkedin',
-    link: 'https://www.linkedin.com/company/once-ui/',
+    name: 'X',
+    icon: 'x',
+    link: 'https://x.com/jakelawdev',
   },
   {
-    name: 'Threads',
-    icon: 'threads',
-    link: 'https://www.threads.com/@once_ui',
+    name: 'Bandcamp',
+    icon: 'bandcamp',
+    link: 'https://jakelaw.bandcamp.com',
   },
   {
     name: 'Email',
     icon: 'email',
-    link: `mailto:${person.email}`,
+    link: 'mailto:jake@jakelawrence.io',
   },
 ];
 
@@ -55,7 +50,7 @@ const home = {
   label: 'Home',
   title: `${person.name}&rsquo;s Portfolio`,
   description: `Portfolio website showcasing my work as a ${person.role}`,
-  headline: <>Building bridges between design and code</>,
+  headline: <>Developer, author & beat-maker</>,
   featured: {
     display: true,
     title: (
@@ -65,17 +60,7 @@ const home = {
     ),
     href: '/work/building-once-ui-a-customizable-design-system',
   },
-  subline: (
-    <>
-      I&nbsp;apos;m Selene, a design engineer at{' '}
-      <Logo
-        icon="/trademarks/wordmark-dark.svg"
-        style={{ display: 'inline-flex', top: '0.25em', marginLeft: '-0.25em' }}
-      />
-      , where I craft intuitive
-      <br /> user experiences. After hours, I build my own projects.
-    </>
-  ),
+  subline: <>I build AI-powered tools, write speculative fiction, and compose downtempo synth jams.</>,
 };
 
 const about = {
