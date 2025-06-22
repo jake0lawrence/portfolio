@@ -146,6 +146,40 @@ export const Header = () => {
                   />
                 </>
               )}
+              {routes["/books"] && (
+                <>
+                  <ToggleButton
+                    className="s-flex-hide"
+                    prefixIcon="book"
+                    href="/books"
+                    label="Books"
+                    selected={pathname.startsWith("/books")}
+                  />
+                  <ToggleButton
+                    className="s-flex-show"
+                    prefixIcon="book"
+                    href="/books"
+                    selected={pathname.startsWith("/books")}
+                  />
+                </>
+              )}
+              {routes["/music"] && (
+                <>
+                  <ToggleButton
+                    className="s-flex-hide"
+                    prefixIcon="book"
+                    href="/music"
+                    label="Music"
+                    selected={pathname.startsWith("/music")}
+                  />
+                  <ToggleButton
+                    className="s-flex-show"
+                    prefixIcon="book"
+                    href="/music"
+                    selected={pathname.startsWith("/music")}
+                  />
+                </>
+              )}
               {display.themeSwitcher && (
                 <>
                   <Line background="neutral-alpha-medium" vert maxHeight="24" />
