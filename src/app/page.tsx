@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Heading, Flex, Text, Button, Avatar, RevealFx, Column, Badge, Row, Meta, Schema } from "@once-ui-system/core";
-import { home, about, person, newsletter, baseURL, routes } from "@/resources";
+import { home, about, person, newsletter, baseURL, routes, work } from "@/resources";
 import { Mailchimp } from "@/components";
 import { Projects } from "@/components/work/Projects";
 import { Posts } from "@/components/blog/Posts";
@@ -41,6 +41,18 @@ export default function Home() {
             <Text wrap="balance" onBackground="neutral-weak" variant="heading-default-xl">
               {home.subline}
             </Text>
+          </RevealFx>
+          <RevealFx paddingTop="8" delay={0.3} horizontal="start" paddingLeft="12">
+            <Button
+              aria-label="Explore Jake Lawrence's portfolio"
+              data-border="rounded"
+              href={work.path}
+              variant="primary"
+              size="m"
+              weight="default"
+            >
+              Explore My Work
+            </Button>
           </RevealFx>
           <RevealFx paddingTop="12" delay={0.4} horizontal="start" paddingLeft="12">
             <Button
