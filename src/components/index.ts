@@ -13,4 +13,5 @@ export { CustomMDX } from "@/components/mdx";
 /* Hero-section helpers */
 export { RecentProjectLink } from "@/components/RecentProjectLink";
 export { default as ProjectPreview } from "@/components/work/ProjectPreview";
-export { ScrollIndicator } from "@/components/ScrollIndicator";  // ← new
+export { ScrollIndicator } from "@/components/ScrollIndicator";
+export { HeroIntro } from "@/components/HeroIntro";
