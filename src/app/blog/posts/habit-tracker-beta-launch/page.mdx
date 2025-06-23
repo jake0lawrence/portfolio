@@ -1,0 +1,100 @@
+---
+title: Habit Tracker β Launch
+date: 2025-06-22
+cover: /assets/blog/habit-tracker/cover.jpg
+excerpt: The first public beta is live! Here’s what works, what’s coming, and how you can shape the roadmap.
+tags: ['product-update', 'beta']
+---
+
+> **TL;DR** — You can now log habits, moods, and notes on any device.  
+> Join the beta 👉 **[Sign-up Form](https://jakelawrence.io/habit-beta)**
+
+## Why launch a beta?
+
+## From sticky-notes to shipping code – the origin story
+
+I wish I could tell you **Habit Tracker** began with a grand product-market-fit workshop, but the truth is it started with a pile of neon Post-its littering my desk.  
+
+Like many folks with ADHD, I cycle through bursts of hyper-focus and stretches of “wait… what was I doing?” I bounced between half-finished habit-apps that either **(a)** locked basic features behind a $99/year paywall, **(b)** required an always-on internet connection (try logging a cold-shower streak on bad hotel Wi-Fi…), or **(c)** bombarded me with streak-breaking guilt emails.
+
+### The pain points I kept hitting
+
+| Friction | Why it matters | My design answer |
+|----------|----------------|------------------|
+| **Offline gaps** | Morning routine often starts before my phone has cell service in the basement gym. | PWA + IndexedDB first. Sync happens _after_ a network heartbeat. |
+| **Rigid “one size fits all” habits** | No two people log meditation or study time the same way. | Custom units (minutes, reps, pages, ☕ cups) with per-habit default values. |
+| **No context for mood / notes** | A streak isn’t helpful without *why* it broke. | Inline emoji-mood slider and optional 140-char note per entry. |
+| **Streak-shaming** | Anxiety ≠ motivation. | Friendly reminders, never shaming language. A missed day simply resets the momentum graph—no skull-and-crossbones. |
+| **Desktop support** | I spend 8+ hrs coding—why pull out a phone? | Responsive web UI w/ ⌘+Shift+H shortcut and subtle tray-notification. |
+
+### Rapid prototype → public beta
+
+January 2025: I hacked the very first version in a weekend—no auth, just a local CSV export for my own data.  
+March: a small Discord channel formed with friends who also wanted “local-first” logging.  
+June: we’re at **420+** beta wait-listers and a barrage of feature requests (dark-mode widgets, weekly email summaries, graph overlays).
+
+So, today’s beta ships the **core trifecta**:
+
+1. **Habit logging** (custom units, back-date support)  
+2. **Inline mood tracking** with emoji slider  
+3. **Streak visualiser** that forgives lapses but highlights momentum
+
+If any of the pain points above ring true, grab the build, break it, and tell me how. Your feedback guides the Q3 roadmap—particularly **desktop notifications** and **privacy-friendly sync** options.
+
+> _“Track the habit, not the guilt.”_ – the tagline (and a gentle reminder to future me)
+
+## Core features in v0.9
+
+| Feature | Status |
+|---------|--------|
+| Log multiple habits per day | ✅ |
+| Mood slider & streak graph   | ✅ |
+| Offline PWA support          | ✅ |
+| Desktop reminders            | 🚧 Q3 |
+
+## How to give feedback
+
+## How to join the beta & give feedback
+
+> **No Discord (yet)** — for now everything happens in public on GitHub or privately by email.
+
+### 1&nbsp;·&nbsp;Grab the code
+
+```bash
+git clone https://github.com/jake0lawrence/habit-track-cli.git
+cd habit-track-cli
+pnpm install && pnpm dev      # web UI
+```
+The repo README walks you through running the local PWA and where to find IndexedDB storage.
+
+### 2 · Open an issue (or discussion)
+Navigate to Issues → New Issue
+
+Pick the template that fits:
+
+🐛 Bug report — something broken
+
+✨ Feature request — “Wouldn’t it be cool if…”
+
+📝 Docs tweak — unclear instructions / typos
+
+Add screenshots, logs, or steps to reproduce.
+
+First-time OSS helper? No worries — even “I pressed X and nothing happened” is valuable.
+
+### 3 · Submit a pull request (optional)
+Fork → create a branch → code away.
+
+Keep PRs focused (one fix/feature).
+
+The project runs ESLint + Vitest in CI; make sure pnpm test is green before opening the PR.
+
+### 4 · Email for anything sensitive
+If GitHub isn’t your thing or you want to share ideas privately:
+
+📧 jakealanlawrence@gmail.com
+Subject: Habit Tracker Beta Feedback
+
+I read every message and usually reply within 24-48 h.
+
+> Thank you for shaping Habit Tracker! Early feedback is pure gold 💛
