@@ -12,9 +12,17 @@ import {
   Schema,
 } from "@once-ui-system/core";
 
-import { home, about, person, newsletter, baseURL, routes } from "@/resources";
-import { Mailchimp, RecentProjectLink } from "@/components";
+import {
+  home,
+  about,
+  person,
+  newsletter,
+  baseURL,
+  routes,
+  work,
+} from "@/resources";
 
+import { Mailchimp, RecentProjectLink } from "@/components";
 import { getPosts } from "@/app/utils/utils";
 import { Projects } from "@/components/work/Projects";
 import ProjectPreview from "@/components/work/ProjectPreview";
@@ -53,10 +61,11 @@ export default function Home() {
       />
 
       {/* ------------------------------------------------------------------ */}
-      {/*  Hero                                                              */}
+      {/*  Hero section                                                      */}
       {/* ------------------------------------------------------------------ */}
       <Column fillWidth paddingY="24" gap="m">
         <Column maxWidth="s">
+          {/* Recent project pill */}
           {home.featured.display && latestProject && (
             <RevealFx
               fillWidth
@@ -72,6 +81,7 @@ export default function Home() {
             </RevealFx>
           )}
 
+          {/* Headline */}
           <RevealFx
             translateY="4"
             fillWidth
@@ -83,6 +93,7 @@ export default function Home() {
             </Heading>
           </RevealFx>
 
+          {/* Sub-headline */}
           <RevealFx
             translateY="8"
             delay={0.2}
@@ -99,7 +110,32 @@ export default function Home() {
             </Text>
           </RevealFx>
 
-          <RevealFx paddingTop="12" delay={0.4} horizontal="start" paddingLeft="12">
+          {/* NEW: primary CTA */}
+          <RevealFx
+            paddingTop="8"
+            delay={0.3}
+            horizontal="start"
+            paddingLeft="12"
+          >
+            <Button
+              aria-label="Explore Jake Lawrence's portfolio"
+              data-border="rounded"
+              href={work.path}
+              variant="primary"
+              size="m"
+              weight="default"
+            >
+              Explore My Work
+            </Button>
+          </RevealFx>
+
+          {/* About button */}
+          <RevealFx
+            paddingTop="12"
+            delay={0.4}
+            horizontal="start"
+            paddingLeft="12"
+          >
             <Button
               id="about"
               data-border="rounded"
