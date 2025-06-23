@@ -1,0 +1,9 @@
+.pill {
+  transition: var(--transition-micro-medium);
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+}
