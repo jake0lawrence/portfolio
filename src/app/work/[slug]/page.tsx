@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import { getPosts } from "@/app/utils/utils";
-import { Meta, Schema, AvatarGroup, Button, Column, Flex, Heading, Media, Text } from "@once-ui-system/core";
+import { Meta, Schema, AvatarGroup, Button, Column, Flex, Heading, Text } from "@once-ui-system/core";
 import { baseURL, about, person, work } from "@/resources";
+import { projects } from "@/data/projects";
+import Image from "next/image";
 import { formatDate } from "@/app/utils/formatDate";
 import { ScrollToHash, CustomMDX } from "@/components";
 import { Metadata } from "next";
@@ -43,6 +45,8 @@ export default async function Project({
 
   let post = getPosts(["src", "app", "work", "projects"]).find((post) => post.slug === slugPath);
 
+  const projectMeta = projects.find((p) => p.slug === slugPath);
+
   if (!post) {
     notFound();
   }
@@ -75,13 +79,14 @@ export default async function Project({
         </Button>
         <Heading variant="display-strong-s">{post.metadata.title}</Heading>
       </Column>
-      {post.metadata.images.length > 0 && (
-        <Media
-          priority
-          aspectRatio="16 / 9"
-          radius="m"
-          alt="image"
-          src={post.metadata.images[0]}
+      {projectMeta && (
+        <Image
+          src={projectMeta.hero}
+          alt={`${post.metadata.title} hero image`}
+          width={1920}
+          height={1080}
+          sizes="(min-width:1024px) 70vw, 100vw"
+          className="w-full h-auto rounded-xl mb-6"
         />
       )}
       <Column style={{ margin: "auto" }} as="article" maxWidth="xs">
