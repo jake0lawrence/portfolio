@@ -3,37 +3,39 @@ name: CI & Deploy to droplet
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:          # allow manual trigger in Actions tab
+  workflow_dispatch:
 
-# ---------------------------------------------------------------------
-#  Shared settings
-# ---------------------------------------------------------------------
 env:
-  NODE_VERSION: 20.x          # keep in sync with droplet
+  NODE_VERSION: 20          # keep in sync with droplet
+  PNPM_VERSION: 10.12.1     # lock so “it works today” == “it works next month”
 
 jobs:
-# ---------------------------------------------------------------------
-#  1) Run a lightweight CI sanity-check
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# 1) CI
+# ---------------------------------------------------------------------------
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: ⬇️  Checkout code
+      - name: ⬇️ Check out repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0      # full history for correct version / changelog
+          fetch-depth: 0
 
-      - name: ⚙️  Setup Node ${{ env.NODE_VERSION }}
+      - name: ⚙️  Install Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "pnpm"
+          cache: "pnpm"               # enable PNPM-aware cache
+
+      - name: 🐣 Install pnpm ${{ env.PNPM_VERSION }}
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false          # we’ll call pnpm install manually
 
       - name: 📦  Install deps
-        run: |
-          corepack enable      # ensures pnpm v10 on runner
-          pnpm install --frozen-lockfile --silent
+        run: pnpm install --frozen-lockfile --silent
 
       - name: 🚦  Lint, test, build
         run: |
@@ -41,21 +43,20 @@ jobs:
           pnpm test
           pnpm run build
 
-# ---------------------------------------------------------------------
-#  2) Deploy – only if CI job above succeeded
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# 2) Deploy (only if CI succeeded)
+# ---------------------------------------------------------------------------
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' }}   # extra safety
+    if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: 🚀  Trigger droplet webhook
+      - name: 🚀  Trigger DigitalOcean webhook
         env:
           WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
           WEBHOOK_URL:    ${{ secrets.WEBHOOK_URL || 'https://jakelawrence.io/deploy' }}
         run: |
-          echo "Calling $WEBHOOK_URL?secret=***"
+          echo "Curling $WEBHOOK_URL"
           curl --fail --silent --show-error \
             "${WEBHOOK_URL}?secret=${WEBHOOK_SECRET}"
-
