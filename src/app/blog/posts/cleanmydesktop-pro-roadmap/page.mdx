@@ -1,0 +1,107 @@
+---
+title: CleanMyDesktop Pro — 2025 Roadmap
+date: 2025-06-22
+cover: /assets/blog/cleanmydesktop/cover.jpg
+excerpt: From smart stacks to AI-powered file tagging — here’s everything on deck for Q3–Q4.
+tags: ['roadmap', 'product']
+---
+
+> **TL;DR** — 2025 is all about *automation*. Smart Stacks land first, AI Tagger follows, and cross-device sync wraps the year. **Early testers, I need you!** Jump to [Call for testers](#call-for-testers).
+
+---
+
+## Looking back at the 2024 alpha
+
+Last year’s alpha proved two things:
+
+1. **People hate desktop clutter**.  
+2. They hate deleting things even more.
+
+The initial “drag-to-clean” flow was fun but manual: you still had to decide *where* files should live.  
+Users kept asking:
+
+> “Can the app just figure out my folder structure for me?”
+
+So 2025’s roadmap flips the script: let CleanMyDesktop organize *for* you, then let you override the edge-cases.
+
+---
+
+## 2025 focus areas
+
+1. **Smart Stacks** – automatic, date-aware folders (Documents → _2025-Q3 Contracts_, _2025-Q3 Receipts_, etc.).  
+2. **AI Tagger** – GPT-powered keyword tagging so searching “quarterly invoice pdf” returns the right file instantly.  
+3. **Cross-device sync** – optional Dropbox / OneDrive integration so your tidy workspace follows you.
+
+---
+
+### Smart Stacks 🗂️
+
+| Scenario | What happens |
+|----------|--------------|
+| Haven’t touched a file in 30 days | It’s moved into a **“Dormant”** sub-folder inside its existing directory. |
+| Downloads older than 7 days | Auto-moved to _Downloads/Archive/YYYY-MM_ |
+| Screenshots | Routed into _Pictures/Screenshots/YYYY-WW_ so weekly folders don’t explode. |
+
+All moves are **undo-able** (⌘ Z or Ctrl Z) and logged in a JSON audit trail.
+
+---
+
+### AI Tagger 🤖
+
+Powered by OpenAI’s function-calling GPT-4o model:
+
+* Extracts subjects (e.g. *taxes*, *JavaScript course*, *wedding photos*).  
+* Generates searchable tags within 300 ms per file (cached in local SQLite).  
+* Recognises 130+ languages and common file types (PDF, DOCX, MP4, RAW).
+
+A natural-language search like **“contracts I signed last spring”** will soon *just work*.
+
+---
+
+### Cross-device sync ☁️
+
+* Opt-in; no file contents touch my servers.  
+* Uses your own Dropbox / OneDrive OAuth token.  
+* Only **rules + metadata** sync, not the files themselves — so large media libraries stay local.
+
+---
+
+## Detailed timeline
+
+| Milestone | ETA | Scope | Status |
+|-----------|-----|-------|--------|
+| **Beta 1: Smart Stacks** | **Aug 2025** | Auto-organise by type + date | 🟡 in progress |
+| **Beta 2: AI Tagger** | **Oct 2025** | GPT tagging & fuzzy search | ⬜ not started |
+| **GA 1.0** | **Dec 2025** | Sync, polished UI, docs | ⬜ planning |
+
+---
+
+## How *you* can influence the roadmap
+
+| You do… | I will… |
+|---------|---------|
+| ⭐ Star / watch the repo | Prioritise issues from watchers first. |
+| Open a GitHub **Issue** | Triage within 24 h, label, add to project board. |
+| Submit a **PR** | Review within 48 h; all contributors credited in release notes. |
+| Email feedback | Summarise & publish (anonymised) so the community can weigh in. |
+
+---
+
+## Call for testers
+
+1. **Clone the repo**  
+   ```bash
+   git clone https://github.com/jake0lawrence/cleanmydesktop-pro
+   pnpm install && pnpm dev
+Break things — enable Smart Stacks, point it at a messy folder, see what happens.
+
+Report bugs / ideas
+
+GitHub: https://github.com/jake0lawrence/cleanmydesktop-pro/issues
+
+Email: jakealanlawrence@gmail.com
+
+First 20 merged PRs get a lifetime Pro license when we hit GA 1.0.
+
+Thanks for helping keep desktops (and minds) clutter-free!
+— Jake
