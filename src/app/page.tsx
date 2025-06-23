@@ -1,14 +1,43 @@
 import React from "react";
 
-import { Heading, Flex, Column, Schema, RevealFx } from "@once-ui-system/core";
-import { home, about, person, newsletter, baseURL, routes } from "@/resources";
-import { Mailchimp, HeroIntro } from "@/components";
+import {
+  Heading,
+  Flex,
+  Column,
+  RevealFx,
+  Schema,
+} from "@once-ui-system/core";
+
+import {
+  home,
+  about,
+  person,
+  newsletter,
+  baseURL,
+  routes,
+} from "@/resources";
+
+import {
+  Mailchimp,
+  HeroIntro,
+  ScrollIndicator,
+} from "@/components";
+
 import { Projects } from "@/components/work/Projects";
+import ProjectPreview from "@/components/work/ProjectPreview";
+import { projects } from "@/data/projects";
 import { Posts } from "@/components/blog/Posts";
+
+/* -------------------------------------------------------------------------- */
+/*  Page                                                                      */
+/* -------------------------------------------------------------------------- */
 
 export default function Home() {
   return (
     <Column maxWidth="m" gap="xl" horizontal="center">
+      {/* ------------------------------------------------------------------ */}
+      {/*  JSON-LD                                                           */}
+      {/* ------------------------------------------------------------------ */}
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -22,14 +51,35 @@ export default function Home() {
           image: `${baseURL}${person.avatar}`,
         }}
       />
+
+      {/* ------------------------------------------------------------------ */}
+      {/*  Hero section (animated)                                           */}
+      {/* ------------------------------------------------------------------ */}
       <Column fillWidth paddingY="24" gap="m">
         <Column maxWidth="s">
           <HeroIntro />
+          {/* Scroll hint */}
+          <Flex horizontal="center" paddingTop="20">
+            <a href="#about" aria-label="Scroll to about section">
+              <ScrollIndicator aria-hidden="true" />
+            </a>
+          </Flex>
         </Column>
       </Column>
+
+      {/* Anchor target for scroll indicator */}
+      <div id="about" />
+
+      {/* ------------------------------------------------------------------ */}
+      {/*  Featured project preview                                          */}
+      {/* ------------------------------------------------------------------ */}
       <RevealFx translateY="16" delay={0.6}>
-        <Projects range={[1, 1]} />
+        <ProjectPreview project={projects[0]} />
       </RevealFx>
+
+      {/* ------------------------------------------------------------------ */}
+      {/*  Latest blog posts                                                 */}
+      {/* ------------------------------------------------------------------ */}
       {routes["/blog"] && (
         <Flex fillWidth gap="24" mobileDirection="column">
           <Flex flex={1} paddingLeft="l" paddingTop="24">
@@ -42,7 +92,15 @@ export default function Home() {
           </Flex>
         </Flex>
       )}
+
+      {/* ------------------------------------------------------------------ */}
+      {/*  Other projects grid                                               */}
+      {/* ------------------------------------------------------------------ */}
       <Projects range={[2]} />
+
+      {/* ------------------------------------------------------------------ */}
+      {/*  Newsletter signup                                                 */}
+      {/* ------------------------------------------------------------------ */}
       {newsletter.display && <Mailchimp newsletter={newsletter} />}
     </Column>
   );

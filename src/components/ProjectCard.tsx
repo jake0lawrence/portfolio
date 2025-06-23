@@ -2,13 +2,13 @@
 
 import {
   AvatarGroup,
-  Carousel,
   Column,
   Flex,
   Heading,
   SmartLink,
   Text,
 } from "@once-ui-system/core";
+import Image from "next/image";
 
 interface ProjectCardProps {
   href: string;
@@ -19,6 +19,7 @@ interface ProjectCardProps {
   description: string;
   avatars: { src: string }[];
   link: string;
+  thumbnail?: string;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -29,16 +30,20 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   description,
   avatars,
   link,
+  thumbnail,
 }) => {
   return (
     <Column fillWidth gap="m">
-      <Carousel
-        sizes="(max-width: 960px) 100vw, 960px"
-        items={images.map((image) => ({
-          slide: image,
-          alt: title,
-        }))}
-      />
+      {thumbnail && (
+        <Image
+          src={thumbnail}
+          alt={`${title} thumbnail`}
+          width={300}
+          height={300}
+          sizes="(max-width:768px) 100vw, 300px"
+          className="max-w-[300px] w-full h-auto rounded-xl mb-6"
+        />
+      )}
       <Flex
         mobileDirection="column"
         fillWidth
