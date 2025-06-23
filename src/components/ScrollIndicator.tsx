@@ -1,13 +1,8 @@
-// src/components/ScrollIndicator.tsx
-import { motion } from "framer-motion";
-import { ChevronDown } from "react-icons/fi";
+import { FiChevronDown } from "react-icons/fi";
+import styles from "./ScrollIndicator.module.scss";
 
 export const ScrollIndicator = () => (
-  <motion.div
-    animate={{ y: [0, 6, 0] }}
-    transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
-    className="text-base-content/70"
-  >
-    <ChevronDown size={24} aria-hidden="true" />
-  </motion.div>
+  <div className={styles.wrapper} aria-hidden="true">
+    <FiChevronDown size={28} />
+  </div>
 );
