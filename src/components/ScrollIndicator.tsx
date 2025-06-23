@@ -1,12 +1,12 @@
-"use client";
-
-import { Icon, Flex } from "@once-ui-system/core";
+import { FiChevronDown } from "react-icons/fi";
 import styles from "./ScrollIndicator.module.scss";
 
-export function ScrollIndicator() {
-  return (
-    <a href="#about" className={styles.indicator} aria-hidden="true">
-      <Icon name="chevronDown" decorative size="l" />
-    </a>
-  );
-}
+/**
+ * Animated chevron that prompts the user to scroll.
+ * Decorative only – aria-hidden keeps SRs quiet.
+ */
+export const ScrollIndicator = () => (
+  <div className={styles.wrapper} aria-hidden="true">
+    <FiChevronDown size={28} />
+  </div>
+);

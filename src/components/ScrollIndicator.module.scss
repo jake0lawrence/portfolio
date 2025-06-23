@@ -1,17 +1,10 @@
-@use "./breakpoints.scss" as breakpoints;
-
-.indicator {
-  display: flex;
-  justify-content: center;
-  margin-top: var(--static-space-16);
-  animation: bounce 2s ease-in-out infinite;
+@keyframes bounce {
+  0%, 100% { transform: translateY(0);   }
+  50%      { transform: translateY(6px); }
 }
 
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(6px);
-  }
+.wrapper {
+  /* Tailwind/Once-UI token : base-content with 70 % opacity */
+  color: theme("colors.base-content / 70%");
+  animation: bounce 1.6s ease-in-out infinite;
 }

@@ -10,6 +10,7 @@ export { ScrollToHash } from "@/components/ScrollToHash";
 export { ThemeToggle } from "@/components/ThemeToggle";
 export { CustomMDX } from "@/components/mdx";
 
-/* New dynamic-pill + preview exports */
+/* Hero-section helpers */
 export { RecentProjectLink } from "@/components/RecentProjectLink";
 export { default as ProjectPreview } from "@/components/work/ProjectPreview";
+export { ScrollIndicator } from "@/components/ScrollIndicator";  // ← new
