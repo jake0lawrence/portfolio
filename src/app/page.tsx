@@ -22,7 +22,12 @@ import {
   work,
 } from "@/resources";
 
-import { Mailchimp, RecentProjectLink } from "@/components";
+import {
+  Mailchimp,
+  RecentProjectLink,
+  ScrollIndicator,
+} from "@/components";
+
 import { getPosts } from "@/app/utils/utils";
 import { Projects } from "@/components/work/Projects";
 import ProjectPreview from "@/components/work/ProjectPreview";
@@ -34,7 +39,7 @@ import { Posts } from "@/components/blog/Posts";
 /* -------------------------------------------------------------------------- */
 
 export default function Home() {
-  // newest project → first in desc-date sort
+  /* newest project → first in desc-date sort */
   const [latestProject] = getPosts(["src", "app", "work", "projects"]).sort(
     (a, b) =>
       new Date(b.metadata.publishedAt).getTime() -
@@ -110,7 +115,7 @@ export default function Home() {
             </Text>
           </RevealFx>
 
-          {/* NEW: primary CTA */}
+          {/* Primary CTA */}
           <RevealFx
             paddingTop="8"
             delay={0.3}
@@ -158,8 +163,18 @@ export default function Home() {
               </Flex>
             </Button>
           </RevealFx>
+
+          {/* Scroll indicator (linking to #about) */}
+          <Flex horizontal="center" paddingTop="20">
+            <a href="#about" aria-label="Scroll to about section">
+              <ScrollIndicator aria-hidden="true" />
+            </a>
+          </Flex>
         </Column>
       </Column>
+
+      {/* Anchor target for scroll indicator */}
+      <div id="about" />
 
       {/* ------------------------------------------------------------------ */}
       {/*  Featured project preview                                          */}
