@@ -5,6 +5,7 @@ import { home, about, person, newsletter, baseURL, routes } from "@/resources";
 import { Mailchimp } from "@/components";
 import { Projects } from "@/components/work/Projects";
 import { Posts } from "@/components/blog/Posts";
+import { ScrollIndicator } from "@/components/ScrollIndicator";
 
 export default function Home() {
   return (
@@ -61,15 +62,19 @@ export default function Home() {
                     size="m"
                   />
                 )}
-                {about.title}
-              </Flex>
-            </Button>
-          </RevealFx>
-        </Column>
+              {about.title}
+            </Flex>
+          </Button>
+        </RevealFx>
+        <Flex horizontal="center">
+          <ScrollIndicator />
+        </Flex>
       </Column>
-      <RevealFx translateY="16" delay={0.6}>
-        <Projects range={[1, 1]} />
-      </RevealFx>
+    </Column>
+    <div id="about" />
+    <RevealFx translateY="16" delay={0.6}>
+      <Projects range={[1, 1]} />
+    </RevealFx>
       {routes["/blog"] && (
         <Flex fillWidth gap="24" mobileDirection="column">
           <Flex flex={1} paddingLeft="l" paddingTop="24">
