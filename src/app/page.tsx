@@ -1,12 +1,19 @@
 import React from "react";
 
-import { Heading, Flex, Text, Button, Avatar, RevealFx, Column, Badge, Row, Meta, Schema } from "@once-ui-system/core";
+import { Heading, Flex, Text, Button, Avatar, RevealFx, Column, Meta, Schema } from "@once-ui-system/core";
 import { home, about, person, newsletter, baseURL, routes } from "@/resources";
-import { Mailchimp } from "@/components";
+import { Mailchimp, RecentProjectLink } from "@/components";
+import { getPosts } from "@/app/utils/utils";
 import { Projects } from "@/components/work/Projects";
 import { Posts } from "@/components/blog/Posts";
 
 export default function Home() {
+  const [latestProject] = getPosts(["src", "app", "work", "projects"]).sort(
+    (a, b) =>
+      new Date(b.metadata.publishedAt).getTime() -
+      new Date(a.metadata.publishedAt).getTime(),
+  );
+
   return (
     <Column maxWidth="m" gap="xl" horizontal="center">
       <Schema
@@ -24,13 +31,19 @@ export default function Home() {
       />
       <Column fillWidth paddingY="24" gap="m">
         <Column maxWidth="s">
-          {home.featured.display && (
-          <RevealFx fillWidth horizontal="start" paddingTop="16" paddingBottom="32" paddingLeft="12">
-            <Badge background="brand-alpha-weak" paddingX="12" paddingY="4" onBackground="neutral-strong" textVariant="label-default-s" arrow={false}
-              href={home.featured.href}>
-              <Row paddingY="2">{home.featured.title}</Row>
-            </Badge>
-          </RevealFx>
+          {home.featured.display && latestProject && (
+            <RevealFx
+              fillWidth
+              horizontal="start"
+              paddingTop="16"
+              paddingBottom="32"
+              paddingLeft="12"
+            >
+              <RecentProjectLink
+                slug={latestProject.slug}
+                title={latestProject.metadata.title}
+              />
+            </RevealFx>
           )}
           <RevealFx translateY="4" fillWidth horizontal="start" paddingBottom="16">
             <Heading wrap="balance" variant="display-strong-l">
