@@ -4,6 +4,8 @@ import { Heading, Flex, Text, Button, Avatar, RevealFx, Column, Badge, Row, Meta
 import { home, about, person, newsletter, baseURL, routes } from "@/resources";
 import { Mailchimp } from "@/components";
 import { Projects } from "@/components/work/Projects";
+import ProjectPreview from "@/components/work/ProjectPreview";
+import { projects } from "@/data/projects";
 import { Posts } from "@/components/blog/Posts";
 
 export default function Home() {
@@ -68,7 +70,7 @@ export default function Home() {
         </Column>
       </Column>
       <RevealFx translateY="16" delay={0.6}>
-        <Projects range={[1, 1]} />
+        <ProjectPreview project={projects[0]} />
       </RevealFx>
       {routes["/blog"] && (
         <Flex fillWidth gap="24" mobileDirection="column">
