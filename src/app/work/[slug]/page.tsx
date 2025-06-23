@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 import { getPosts } from "@/app/utils/utils";
-import { Meta, Schema, AvatarGroup, Button, Column, Flex, Heading, Media, Text } from "@once-ui-system/core";
+import { Meta, Schema, AvatarGroup, Button, Column, Flex, Heading, Text } from "@once-ui-system/core";
+import Image from "next/image";
 import { baseURL, about, person, work } from "@/resources";
 import { formatDate } from "@/app/utils/formatDate";
 import { ScrollToHash, CustomMDX } from "@/components";
 import { Metadata } from "next";
+import { projects as projectMeta } from "@/data/projects";
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const posts = getPosts(["src", "app", "work", "projects"]);
@@ -51,6 +53,7 @@ export default async function Project({
     post.metadata.team?.map((person) => ({
       src: person.avatar,
     })) || [];
+  const meta = projectMeta.find((p) => p.slug === post.slug);
 
   return (
     <Column as="section" maxWidth="m" horizontal="center" gap="l">
@@ -75,13 +78,15 @@ export default async function Project({
         </Button>
         <Heading variant="display-strong-s">{post.metadata.title}</Heading>
       </Column>
-      {post.metadata.images.length > 0 && (
-        <Media
+      {meta && (
+        <Image
           priority
-          aspectRatio="16 / 9"
-          radius="m"
-          alt="image"
-          src={post.metadata.images[0]}
+          src={meta.hero}
+          alt={`${meta.title} hero`}
+          width={1600}
+          height={900}
+          sizes="(min-width:1024px) 70vw, 100vw"
+          className="w-full h-auto rounded-xl mb-6"
         />
       )}
       <Column style={{ margin: "auto" }} as="article" maxWidth="xs">
