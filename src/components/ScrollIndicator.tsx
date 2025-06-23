@@ -1,12 +1,22 @@
-import { FiChevronDown } from "react-icons/fi";
-import styles from "./ScrollIndicator.module.scss";
+// src/components/ScrollIndicator.tsx
+'use client';
+
+import { FiChevronDown } from 'react-icons/fi';
+import styles from './ScrollIndicator.module.scss';
 
 /**
- * Animated chevron that prompts the user to scroll.
- * Decorative only – aria-hidden keeps SRs quiet.
+ * A subtle, looping chevron that nudges visitors to scroll.
+ *  – Decorative only: aria-hidden keeps screen readers quiet.
+ *  – Wrapped in an anchor so <Enter>/<Space> also scroll.
  */
-export const ScrollIndicator = () => (
-  <div className={styles.wrapper} aria-hidden="true">
-    <FiChevronDown size={28} />
-  </div>
-);
+export function ScrollIndicator() {
+  return (
+    <a
+      href="#about"
+      aria-label="Scroll to the next section"
+      className={styles.wrapper}
+    >
+      <FiChevronDown size={28} aria-hidden="true" />
+    </a>
+  );
+}
