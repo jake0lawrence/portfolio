@@ -1,0 +1,9 @@
+@keyframes bounce {
+  0%, 100%   { transform: translateY(0);   }
+  50%        { transform: translateY(6px); }
+}
+
+.wrapper {
+  color: theme("colors.base-content / 70%");   /* tailwind theme helper */
+  animation: bounce 1.6s ease-in-out infinite;
+}
