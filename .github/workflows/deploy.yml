@@ -1,22 +1,61 @@
-name: Deploy to DigitalOcean
+name: CI & Deploy to droplet
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  workflow_dispatch:          # allow manual trigger in Actions tab
+
+# ---------------------------------------------------------------------
+#  Shared settings
+# ---------------------------------------------------------------------
+env:
+  NODE_VERSION: 20.x          # keep in sync with droplet
 
 jobs:
-  deploy:
+# ---------------------------------------------------------------------
+#  1) Run a lightweight CI sanity-check
+# ---------------------------------------------------------------------
+  test:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Deploy via SSH
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.DO_HOST }}
-        username: root
-        key: ${{ secrets.DO_SSH_KEY }}
-        script: |
-          cd /var/www/jakelawrence.io
-          git pull origin main
-          npm install
-          pm2 restart portfolio
+      - name: ⬇️  Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0      # full history for correct version / changelog
+
+      - name: ⚙️  Setup Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: 📦  Install deps
+        run: |
+          corepack enable      # ensures pnpm v10 on runner
+          pnpm install --frozen-lockfile --silent
+
+      - name: 🚦  Lint, test, build
+        run: |
+          pnpm lint
+          pnpm test
+          pnpm run build
+
+# ---------------------------------------------------------------------
+#  2) Deploy – only if CI job above succeeded
+# ---------------------------------------------------------------------
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}   # extra safety
+
+    steps:
+      - name: 🚀  Trigger droplet webhook
+        env:
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+          WEBHOOK_URL:    ${{ secrets.WEBHOOK_URL || 'https://jakelawrence.io/deploy' }}
+        run: |
+          echo "Calling $WEBHOOK_URL?secret=***"
+          curl --fail --silent --show-error \
+            "${WEBHOOK_URL}?secret=${WEBHOOK_SECRET}"
+
