@@ -1,11 +1,15 @@
-// src/app/blog/posts/habit-tracker-beta-launch/page.tsx
 'use client';
 
-export { frontmatter } from './content.mdx';
-export const dynamic = 'force-dynamic';
+import Content, { frontmatter } from './content.mdx';
 
-import Content from './content.mdx';
+export const metadata = {
+  title: frontmatter.title,
+  description: frontmatter.excerpt ?? '',
+};
+
+export const dynamic = 'force-dynamic';
 
 export default function HabitTrackerBetaPage() {
   return <Content />;
 }
+

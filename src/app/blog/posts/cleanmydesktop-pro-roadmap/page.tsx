@@ -1,11 +1,15 @@
-// src/app/blog/posts/cleanmydesktop-pro-roadmap/page.tsx
 'use client';
 
-export { frontmatter } from './content.mdx';   // ← add this line
-export const dynamic = 'force-dynamic';        // optional, keeps CSR only
+import Content, { frontmatter } from './content.mdx';
 
-import Content from './content.mdx';
+export const metadata = {
+  title: frontmatter.title,
+  description: frontmatter.excerpt ?? '',
+};
+
+export const dynamic = 'force-dynamic';  // keeps CSR only
 
 export default function RoadmapPage() {
   return <Content />;
 }
+
