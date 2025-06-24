@@ -1,4 +1,6 @@
-import ClientContent from './ClientContent';
+import dynamic from 'next/dynamic';
+
+const ClientContent = dynamic(() => import('./ClientContent'));
 
 export const metadata = {
   title: 'Habit Tracker — Beta Launch',
