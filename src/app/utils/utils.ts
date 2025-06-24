@@ -22,12 +22,24 @@ type Metadata = {
 
 import { notFound } from 'next/navigation';
 
-function getMDXFiles(dir: string) {
+function getMDXFiles(dir: string): string[] {
   if (!fs.existsSync(dir)) {
     notFound();
   }
 
-  return fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  let files: string[] = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files = files.concat(getMDXFiles(fullPath));
+    } else if (entry.isFile() && path.extname(entry.name) === '.mdx') {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
 }
 
 function readMDXFile(filePath: string) {
@@ -54,9 +66,13 @@ function readMDXFile(filePath: string) {
 
 function getMDXData(dir: string) {
   const mdxFiles = getMDXFiles(dir);
-  return mdxFiles.map((file) => {
-    const { metadata, content } = readMDXFile(path.join(dir, file));
-    const slug = path.basename(file, path.extname(file));
+  return mdxFiles.map((filePath) => {
+    const { metadata, content } = readMDXFile(filePath);
+    let slugPath = path.relative(dir, filePath).replace(/\.mdx$/, '');
+    if (path.basename(slugPath) === 'content' && path.dirname(slugPath) !== '.') {
+      slugPath = path.dirname(slugPath);
+    }
+    const slug = slugPath.split(path.sep).join('/');
 
     return {
       metadata,
