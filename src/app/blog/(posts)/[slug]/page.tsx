@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { CustomMDX, ScrollToHash } from "@/components";
+import { ScrollToHash } from "@/components";
+import type { ComponentType } from "react";
 import { Meta, Schema, AvatarGroup, Button, Column, Heading, HeadingNav, Icon, Row, Text } from "@once-ui-system/core";
 import { baseURL, about, blog, person } from "@/resources";
 import { formatDate } from "@/app/utils/formatDate";
@@ -41,14 +42,20 @@ export default async function Blog({
   const routeParams = await params;
   const slugPath = Array.isArray(routeParams.slug) ? routeParams.slug.join('/') : routeParams.slug || '';
 
-  let post = getPosts(["src", "app", "blog", "posts"]).find((post) => post.slug === slugPath);
-
-  if (!post) {
+  let postModule: { default: ComponentType; frontmatter: any } | null = null;
+  try {
+    postModule = await import(`../../posts/${slugPath}.mdx`);
+  } catch {
     notFound();
   }
+  if (!postModule) {
+    notFound();
+  }
+  const { default: PostContent, frontmatter } = postModule;
+  const post = { metadata: frontmatter, slug: slugPath };
 
   const avatars =
-    post.metadata.team?.map((person) => ({
+    post.metadata.team?.map((person: { avatar: string }) => ({
       src: person.avatar,
     })) || [];
 
@@ -83,7 +90,7 @@ export default async function Blog({
             </Text>
           </Row>
           <Column as="article" fillWidth>
-            <CustomMDX source={post.content} />
+            <PostContent />
           </Column>
           <ScrollToHash />
         </Column>
