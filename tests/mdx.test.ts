@@ -1,22 +1,35 @@
+// tests/mdx.test.ts
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
-function getFiles(dir: string): string[] {
-  return fs
-    .readdirSync(dir)
-    .filter((f) => f.endsWith('.mdx'))
-    .map((f) => path.join(dir, f));
+/**
+ * Recursively gather every .mdx file under a directory.
+ */
+function collectMdxFiles(dir: string): string[] {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) return collectMdxFiles(fullPath);
+    return entry.isFile() && entry.name.toLowerCase().endsWith('.mdx')
+      ? [fullPath]
+      : [];
+  });
 }
 
 const blogDir = path.join(process.cwd(), 'src/app/blog/posts');
 const workDir = path.join(process.cwd(), 'src/app/work/projects');
 
-for (const file of [...getFiles(blogDir), ...getFiles(workDir)]) {
+const mdxFiles = [
+  ...collectMdxFiles(blogDir),
+  ...collectMdxFiles(workDir),
+];
+
+for (const file of mdxFiles) {
   test(`frontmatter ${path.relative(process.cwd(), file)}`, () => {
     const { data } = matter.read(file);
+
     assert.ok(data.title, 'missing title');
     assert.ok(data.publishedAt, 'missing publishedAt');
   });
