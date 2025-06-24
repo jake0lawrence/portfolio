@@ -28,7 +28,11 @@ const mdxFiles = [
 
 for (const file of mdxFiles) {
   test(`frontmatter ${path.relative(process.cwd(), file)}`, () => {
-    const { data } = matter.read(file);
+    let src = fs.readFileSync(file, 'utf8');
+    if (src.startsWith("'use client'")) {
+      src = src.split('\n').slice(1).join('\n');
+    }
+    const { data } = matter(src);
 
     assert.ok(data.title, 'missing title');
     assert.ok(data.publishedAt, 'missing publishedAt');
