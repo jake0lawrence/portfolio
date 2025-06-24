@@ -13,7 +13,10 @@ const nextConfig = {
     compiler: 'modern',
     silenceDeprecations: ['legacy-js-api'],
   },
+
+  /** Disable minification until WebpackError bug is fixed */
   webpack(config) {
+    // ---- inject our React-default shim ----
     const origEntry = config.entry;
     config.entry = async () => {
       const entries = await origEntry();
@@ -24,6 +27,11 @@ const nextConfig = {
       }
       return entries;
     };
+
+    // ---- turn off minification (fixes _webpack.WebpackError crash) ----
+    config.optimization ??= {};
+    config.optimization.minimize = false;
+
     return config;
   },
 };
