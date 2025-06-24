@@ -4,7 +4,6 @@ import mdx from '@next/mdx';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
-const shimPath   = path.resolve(__dirname, 'src/mdx-react-shim.js');
 
 const withMDX = mdx({ extension: /\.mdx?$/ });
 
@@ -17,16 +16,7 @@ export default withMDX({
     silenceDeprecations : ['legacy-js-api'],
   },
   webpack(config) {
-    /* ---------------------------------------------- */
-    /*  alias ONLY the runtime entry-points to the shim*/
-    /* ---------------------------------------------- */
     config.resolve ??= {};
-    config.resolve.alias = {
-      ...(config.resolve.alias ?? {}),
-      'react/jsx-runtime'     : shimPath,
-      'react/jsx-dev-runtime' : shimPath,
-      // leave plain “react” alone!
-    };
 
     /* Disable minification until the build is green   */
     config.optimization ??= {};
