@@ -3,34 +3,35 @@ import { fileURLToPath } from 'node:url';
 import mdx from '@next/mdx';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname  = path.dirname(__filename);   // ← works in .mjs
+const __dirname  = path.dirname(__filename);
+const shimPath   = path.resolve(__dirname, 'src/mdx-react-shim.js');
 
 const withMDX = mdx({ extension: /\.mdx?$/ });
 
 /** @type {import('next').NextConfig} */
 export default withMDX({
-  pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
+  pageExtensions   : ['ts', 'tsx', 'md', 'mdx'],
   transpilePackages: ['next-mdx-remote'],
-
-  sassOptions: {
-    compiler: 'modern',
-    silenceDeprecations: ['legacy-js-api'],
+  sassOptions      : {
+    compiler            : 'modern',
+    silenceDeprecations : ['legacy-js-api'],
   },
-
   webpack(config) {
-    /* ── 1. Always hand out our shim when “react” is imported ───────── */
+    /* ---------------------------------------------- */
+    /*  alias ONLY the runtime entry-points to the shim*/
+    /* ---------------------------------------------- */
     config.resolve ??= {};
-    config.resolve.alias ??= {};
-    config.resolve.alias.react = path.resolve(
-      __dirname,
-      'src/mdx-react-shim.ts'
-    );
+    config.resolve.alias = {
+      ...(config.resolve.alias ?? {}),
+      'react/jsx-runtime'     : shimPath,
+      'react/jsx-dev-runtime' : shimPath,
+      // leave plain “react” alone!
+    };
 
-    /* ── 2. Disable SWC/Terser while Next bug is open ───────────────── */
+    /* Disable minification until the build is green   */
     config.optimization ??= {};
     config.optimization.minimize = false;
 
     return config;
   },
 });
-
