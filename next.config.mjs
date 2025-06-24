@@ -1,12 +1,14 @@
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import mdx from '@next/mdx';
 
-const withMDX = mdx({
-  extension: /\.mdx?$/,
-});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = path.dirname(__filename);   // ← works in .mjs
+
+const withMDX = mdx({ extension: /\.mdx?$/ });
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+export default withMDX({
   pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
   transpilePackages: ['next-mdx-remote'],
 
@@ -16,7 +18,7 @@ const nextConfig = {
   },
 
   webpack(config) {
-    // ---------- 1.  Alias every `react` import to our shim ----------
+    /* ── 1. Always hand out our shim when “react” is imported ───────── */
     config.resolve ??= {};
     config.resolve.alias ??= {};
     config.resolve.alias.react = path.resolve(
@@ -24,13 +26,11 @@ const nextConfig = {
       'src/mdx-react-shim.ts'
     );
 
-    // ---------- 2.  Disable minification (keeps the build stable) ---
+    /* ── 2. Disable SWC/Terser while Next bug is open ───────────────── */
     config.optimization ??= {};
     config.optimization.minimize = false;
 
     return config;
   },
-};
-
-export default withMDX(nextConfig);
+});
 
