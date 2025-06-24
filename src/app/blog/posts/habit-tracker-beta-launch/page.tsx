@@ -1,5 +1,3 @@
-'use client';
-
 import Content, { frontmatter } from './content.mdx';
 
 export const metadata = {
@@ -12,4 +10,3 @@ export const dynamic = 'force-dynamic';
 export default function HabitTrackerBetaPage() {
   return <Content />;
 }
-
