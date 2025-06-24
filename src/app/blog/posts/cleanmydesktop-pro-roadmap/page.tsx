@@ -1,16 +1,13 @@
-// src/app/blog/posts/cleanmydesktop-pro-roadmap/page.tsx
+import { frontmatter } from './content.mdx';
 import dynamic from 'next/dynamic';
 
-// ↓ client-only import; skips SSR so Radix never runs on the server
-const Content = dynamic(() => import('./content.mdx'), { ssr: false });
+const ClientContent = dynamic(() => import('./ClientContent'));
 
-// hand-write the metadata (front-matter stays inside the MDX for tests/SEO)
 export const metadata = {
-  title: 'CleanMyDesktop Pro — 2025 Roadmap',
-  description: 'From smart stacks to AI-powered tagging — here’s everything on deck for Q3–Q4.',
+  title: frontmatter.title,
+  description: frontmatter.excerpt ?? '',
 };
 
 export default function RoadmapPage() {
-  return <Content />;
+  return <ClientContent />;
 }
-

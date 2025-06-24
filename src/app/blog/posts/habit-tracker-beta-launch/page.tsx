@@ -1,13 +1,13 @@
-// src/app/blog/posts/habit-tracker-beta-launch/page.tsx
+import { frontmatter } from './content.mdx';
 import dynamic from 'next/dynamic';
-const Content = dynamic(() => import('./content.mdx'), { ssr: false });
+
+const ClientContent = dynamic(() => import('./ClientContent'));
 
 export const metadata = {
-  title: 'Habit Tracker — Beta Launch',
-  description: 'Log habits, moods and notes on any device – join the beta!',
+  title: frontmatter.title,
+  description: frontmatter.excerpt ?? '',
 };
 
 export default function HabitTrackerBetaPage() {
-  return <Content />;
+  return <ClientContent />;
 }
-
