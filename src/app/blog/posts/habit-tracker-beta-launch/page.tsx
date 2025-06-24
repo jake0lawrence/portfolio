@@ -1,11 +1,9 @@
-import { frontmatter } from './content.mdx';
-import dynamic from 'next/dynamic';
-
-const ClientContent = dynamic(() => import('./ClientContent'));
+import ClientContent from './ClientContent';
 
 export const metadata = {
-  title: frontmatter.title,
-  description: frontmatter.excerpt ?? '',
+  title: 'Habit Tracker — Beta Launch',
+  description:
+    'Log habits, moods and notes on any device – join the beta!',
 };
 
 export default function HabitTrackerBetaPage() {
