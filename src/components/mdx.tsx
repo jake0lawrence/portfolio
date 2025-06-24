@@ -68,15 +68,21 @@ function createImage({ alt, src, ...props }: MediaProps & { src: string }) {
 function slugify(str: string): string {
   return str
     .toLowerCase()
-    .replace(/\s+/g, "-") // Replace spaces with -
-    .replace(/&/g, "-and-") // Replace & with 'and'
-    .replace(/[^\w\-]+/g, "") // Remove all non-word characters except for -
-    .replace(/\-\-+/g, "-"); // Replace multiple - with single -
+    .replace(/\s+/g, "-")
+    .replace(/&/g, "-and-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-");
+}
+
+function extractText(children: React.ReactNode): string {
+  return React.Children.toArray(children)
+    .map((child) => (typeof child === 'string' ? child : ''))
+    .join('');
 }
 
 function createHeading(as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6") {
   const CustomHeading = ({ children, ...props }: Omit<React.ComponentProps<typeof HeadingLink>, 'as' | 'id'>) => {
-    const slug = slugify(children as string);
+    const slug = slugify(extractText(children));
     return (
       <HeadingLink
         marginTop="24"
