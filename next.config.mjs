@@ -1,8 +1,8 @@
+import path from 'node:path';
 import mdx from '@next/mdx';
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
-  options: {},       // ← add any remark/rehype plugins here
 });
 
 /** @type {import('next').NextConfig} */
@@ -16,24 +16,15 @@ const nextConfig = {
   },
 
   webpack(config) {
-    // ───────────────────────────────────────────────
-    // 1  Inject React-shim into every entry-point
-    // ───────────────────────────────────────────────
-    const origEntry = config.entry;
-    config.entry = async () => {
-      const entries = await origEntry();
-      for (const key of Object.keys(entries)) {
-        const val = entries[key];
-        if (Array.isArray(val) && !val.includes('./src/mdx-react-shim.ts')) {
-          val.unshift('./src/mdx-react-shim.ts');
-        }
-      }
-      return entries;
-    };
+    // ---------- 1.  Alias every `react` import to our shim ----------
+    config.resolve ??= {};
+    config.resolve.alias ??= {};
+    config.resolve.alias.react = path.resolve(
+      __dirname,
+      'src/mdx-react-shim.ts'
+    );
 
-    // ───────────────────────────────────────────────
-    // 2  Disable code-minification (temporary bugfix)
-    // ───────────────────────────────────────────────
+    // ---------- 2.  Disable minification (keeps the build stable) ---
     config.optimization ??= {};
     config.optimization.minimize = false;
 

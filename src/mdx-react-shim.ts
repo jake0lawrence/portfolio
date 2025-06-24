@@ -1,8 +1,9 @@
+// Single place to add `default` when Next 13+ strips it out
 import * as ReactNS from 'react';
-
-// Provide a default export so `import React from 'react'` (added by MDX)
-// gets a working object with createContext, etc.
-(ReactNS as any).default = ReactNS;
-
-export {};   // side-effect only
+if (!('default' in ReactNS)) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore – patching the runtime object
+  (ReactNS as any).default = ReactNS;
+}
+export = ReactNS;
 
