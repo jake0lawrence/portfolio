@@ -5,3 +5,4 @@ import * as ReactNS from 'react';
 (ReactNS as any).default = ReactNS;
 
 export {};   // side-effect only
+
