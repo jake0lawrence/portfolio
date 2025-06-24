@@ -12,7 +12,7 @@ on:
 # Global versions
 # ──────────────────────────────────────────────────────────────
 env:
-  NODE_VERSION: "20"        # keep in sync with the droplet
+  NODE_VERSION: "20"        # keep in sync with the droplet runtime
   PNPM_VERSION: "10.12.1"   # lock major/minor for reproducibility
 
 # ──────────────────────────────────────────────────────────────
@@ -29,19 +29,24 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2. Install both Node **and** pnpm in one shot
-      - name: 🐣  Install pnpm + Node
+      # 2. Install Node.js (official action)
+      - name: 🟦  Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # 3. Install pnpm (no Node input here)
+      - name: 🐣  Setup pnpm
         uses: pnpm/action-setup@v3
         with:
-          version:       ${{ env.PNPM_VERSION }}   # pnpm version
-          node-version:  ${{ env.NODE_VERSION }}   # Node version
-          run_install:   false                     # we’ll run install below
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false        # we run install ourselves below
 
-      # 3. Install deps (cached automatically by pnpm/action-setup)
+      # 4. Install dependencies (uses pnpm cache)
       - name: 📦  Install deps
         run: pnpm install --frozen-lockfile --silent
 
-      # 4. Lint, test, production build
+      # 5. Lint, unit tests, and production build
       - name: 🚦  Lint, test, build
         run: |
           pnpm lint
@@ -49,12 +54,12 @@ jobs:
           pnpm run build
 
 # ──────────────────────────────────────────────────────────────
-# 2) Deploy (only runs if CI passed & we’re on main)
+# 2) Deploy (runs only if “test” succeeded on main)
 # ──────────────────────────────────────────────────────────────
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && success()
 
     steps:
       - name: 🚀  Trigger DigitalOcean webhook
@@ -65,5 +70,4 @@ jobs:
         run: |
           URL="${WEBHOOK_URL:-https://jakelawrence.io/deploy}"
           echo "Curling $URL"
-          curl --fail --silent --show-error \
-            "${URL}?secret=${WEBHOOK_SECRET}"
+          curl --fail --silent --show-error "${URL}?secret=${WEBHOOK_SECRET}"
