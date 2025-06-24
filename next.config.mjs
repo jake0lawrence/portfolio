@@ -2,33 +2,38 @@ import mdx from '@next/mdx';
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
-  options: {},
+  options: {},       // ← add any remark/rehype plugins here
 });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
   transpilePackages: ['next-mdx-remote'],
+
   sassOptions: {
     compiler: 'modern',
     silenceDeprecations: ['legacy-js-api'],
   },
 
-  /** Disable minification until WebpackError bug is fixed */
   webpack(config) {
-    // ---- inject our React-default shim ----
+    // ───────────────────────────────────────────────
+    // 1  Inject React-shim into every entry-point
+    // ───────────────────────────────────────────────
     const origEntry = config.entry;
     config.entry = async () => {
       const entries = await origEntry();
-      const key = entries['main-app'] ? 'main-app' : 'main';
-      if (!entries[key]) entries[key] = [];
-      if (!entries[key].includes('./src/mdx-react-shim.ts')) {
-        entries[key].unshift('./src/mdx-react-shim.ts');
+      for (const key of Object.keys(entries)) {
+        const val = entries[key];
+        if (Array.isArray(val) && !val.includes('./src/mdx-react-shim.ts')) {
+          val.unshift('./src/mdx-react-shim.ts');
+        }
       }
       return entries;
     };
 
-    // ---- turn off minification (fixes _webpack.WebpackError crash) ----
+    // ───────────────────────────────────────────────
+    // 2  Disable code-minification (temporary bugfix)
+    // ───────────────────────────────────────────────
     config.optimization ??= {};
     config.optimization.minimize = false;
 
@@ -37,3 +42,4 @@ const nextConfig = {
 };
 
 export default withMDX(nextConfig);
+
