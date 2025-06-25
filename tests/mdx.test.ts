@@ -38,3 +38,14 @@ for (const file of mdxFiles) {
     assert.ok(data.publishedAt, 'missing publishedAt');
   });
 }
+
+test('getPosts handles use client frontmatter', () => {
+  type Post = { metadata: { publishedAt: string }; slug: string; content: string };
+  const { getPosts } = require('../src/app/utils/utils') as {
+    getPosts: (paths: string[]) => Post[];
+  };
+  const posts = getPosts(['src', 'app', 'blog', 'posts']);
+  const item = posts.find((p) => p.slug === 'cleanmydesktop-pro-roadmap');
+  assert.ok(item, 'post not found');
+  assert.ok(item.metadata.publishedAt, 'missing publishedAt');
+});
