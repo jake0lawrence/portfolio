@@ -36,6 +36,11 @@ for (const file of mdxFiles) {
 
     assert.ok(data.title, 'missing title');
     assert.ok(data.publishedAt, 'missing publishedAt');
+    assert.equal(
+      typeof data.publishedAt,
+      'string',
+      'publishedAt must be a string'
+    );
   });
 }
 
@@ -48,4 +53,9 @@ test('getPosts handles use client frontmatter', () => {
   const item = posts.find((p) => p.slug === 'cleanmydesktop-pro-roadmap');
   assert.ok(item, 'post not found');
   assert.ok(item.metadata.publishedAt, 'missing publishedAt');
+  assert.equal(
+    typeof item.metadata.publishedAt,
+    'string',
+    'publishedAt must be a string'
+  );
 });

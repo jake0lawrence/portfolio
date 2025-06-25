@@ -63,9 +63,17 @@ function readMDXFile(filePath: string) {
 
   const { data, content } = matter(rawContent);
 
+  const dateVal = data.publishedAt;
+  let publishedAt = "";
+  if (typeof dateVal === "string") {
+    publishedAt = dateVal;
+  } else if (dateVal instanceof Date && !Number.isNaN(dateVal.valueOf())) {
+    publishedAt = dateVal.toISOString().slice(0, 10);
+  }
+
   const metadata: Metadata = {
     title: data.title || "",
-    publishedAt: data.publishedAt || "",
+    publishedAt,
     summary: data.summary || "",
     image: data.image || "",
     images: data.images || [],
