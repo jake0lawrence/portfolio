@@ -43,16 +43,23 @@ function getMDXFiles(dir: string): string[] {
 }
 
 function readMDXFile(filePath: string) {
-    if (!fs.existsSync(filePath)) {
-        notFound();
-    }
+  if (!fs.existsSync(filePath)) {
+    notFound();
+  }
 
-  const rawContent = fs.readFileSync(filePath, "utf-8");
+  let rawContent = fs.readFileSync(filePath, "utf-8");
+  if (
+    rawContent.startsWith("'use client'") ||
+    rawContent.startsWith('"use client"')
+  ) {
+    rawContent = rawContent.split(/\r?\n/).slice(1).join("\n");
+  }
+
   const { data, content } = matter(rawContent);
 
   const metadata: Metadata = {
     title: data.title || "",
-    publishedAt: data.publishedAt,
+    publishedAt: data.publishedAt || "",
     summary: data.summary || "",
     image: data.image || "",
     images: data.images || [],
