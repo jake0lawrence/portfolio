@@ -1,0 +1,132 @@
+---
+title: "Welcome to My Multiverse"
+slug: welcome
+publishedAt: 2025-06-29
+description: "A guided tour of jakelawrence.io—apps, novels, automation tricks, and a sprinkle of cosmic dread."
+---
+
+import Image from "next/image";
+import Callout from "@/components/Callout";
+
+/* ---------------------------------------------------------
+   1  Opening Pulse
+--------------------------------------------------------- */
+
+# 👋 Hey there — Jake here!
+
+If you’re reading this, you probably landed on **[jakelawrence.io](/)** because you:
+
+1. Enjoy **automation eye-candy**  
+2. Love **sci-fi-horror fiction**  
+3. Were told I’m *the* guy who can make your municipal-court migration boring-proof
+
+Whatever the reason—welcome! This post walks you through **how the site works, what to explore, and how the code deploys itself while I sleep.**
+
+<Callout variant="info">
+Everything you see here is <strong>open-source</strong>.  
+Peek at <a href="https://github.com/jake0lawrence/portfolio">the repo →</a>
+</Callout>
+
+---
+
+## 2  The Content Constellation 🌌
+
+```mermaid
+flowchart LR
+    A[Apps&nbsp;Lab] -->|live demos| Site[Home]
+    Blog[AI & Builder Blog] --> Site
+    Books[Novels<br/>(*The&nbsp;Liminal*)] --> Site
+    Work[Client Case Studies] --> Site
+    Music[AI-augmented Tracks] --> Site
+    subgraph Home
+      Site
+    end
+````
+
+| Section              | Quick taste                                                                               |
+| -------------------- | ----------------------------------------------------------------------------------------- |
+| **[Apps](/work)**    | One-click desktop cleaners, habit trackers, OSS experiments                               |
+| **[Blog](/blog)**    | Essays on GPT agents, productivity engineering, indie--dev learnings                      |
+| **[Novels](/books)** | Draft chapters, cover designs, lore snippets from my sci-fi-horror series **The Liminal** |
+| **[Music](/music)**  | Generative synthwave + bagpipe mesh-ups (yes, seriously)                                  |
+
+---
+
+## 3  From Commit to Production in ≈ 90 s 🚀
+
+Below is the **DAG** my CI/CD pipeline follows whenever I push to `main`.
+
+```mermaid
+flowchart TD
+    subgraph GitHub Actions
+        LINT[Lint] --> TEST[Test] --> BUILD[Next build]
+        BUILD --> DEPLOY[cURL webhook]
+    end
+
+    DEPLOY --> Webhook[/Webhook 9001/]
+    Webhook --> Script[[/opt/deploy/portfolio.sh]]
+    Script --> PM2[PM2 reload]
+    PM2 --> NGINX[(NGINX 443)]
+    NGINX --> Browser[🧑‍💻 You]
+```
+
+* **All green?** A secure webhook hits my [DigitalOcean droplet](https://docs.digitalocean.com/products/droplets/).
+* The droplet script pulls latest, runs `pnpm build`, and reloads **PM2**.
+* **NGINX** proxies HTTPS traffic to port 3000. Zero-downtime, no drama.
+
+Want the gritty details? See the **[`infra-playbook.md`](/infra-playbook.md)**.
+
+---
+
+## 4  MDX Everywhere ✨
+
+All posts, chapters, and case studies are plain **MDX**. Example front-matter:
+
+```mdx
+---
+title: "Quantum Pizza Delivery"
+publishedAt: 2025-07-04
+description: "What happens when your dinner arrives before you order it?"
+---
+```
+
+Inside the markdown you can drop React components:
+
+```mdx
+<Callout variant="warning">
+Time dilation fees not included.
+</Callout>
+```
+
+---
+
+## 5  Tech Stack in 60 seconds
+
+| Layer                              | Highlights                               |
+| ---------------------------------- | ---------------------------------------- |
+| **Next.js 15**                     | App-router, React 19                     |
+| **[Once UI](https://once-ui.com)** | Customised theme, dark-mode              |
+| **pnpm 10**                        | Fast, deterministic installs             |
+| **TypeScript**                     | `strict`—no `any` in production code     |
+| **CI/CD**                          | GitHub Actions → Webhook → PM2           |
+| **Docs**                           | [`AGENTS.md`](/AGENTS.md) (coding rules) |
+
+---
+
+## 6  What’s Next?
+
+* **AI-narrated audio** for every blog post
+* **PR preview subdomain**
+* **Offline-first PWA** (because the apocalypse has bad Wi-Fi)
+
+> **Got an idea?** [Open an Issue](https://github.com/jake0lawrence/portfolio/issues) or DM **@jake0lawrence**.
+
+---
+
+## 7  Thanks for Dropping By
+
+Whether you’re a potential client, future employer, or fellow night-owl tinkerer—explore, fork the repo, or just read a chapter of *The Liminal* before bed (sleep tight!).
+
+*Stay curious, automate boldly, and never trust the dark matter.*
+
+— **Jake** 🛰️
