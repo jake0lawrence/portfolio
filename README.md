@@ -1,21 +1,102 @@
-# Jake Lawrence — Apps · Blog · Books · Music
+# Jake Lawrence — Portfolio
 
-## Project overview
+*Apps · Writing · Engineering · Sci‑Fi Horror*
 
-This repo contains the source for **jakelawrence.io**, a Next.js 15 site built with [Once UI](https://once-ui.com). It hosts Jake's apps, blog posts, book notes and music library.
+[Live Site](https://jakelawrence.io) · [Blog](/blog) · [Work Lab](/work) · [Novels](/books) · [Music](/music)
 
-## Setup
+---
 
-1. Install dependencies with `pnpm install` (Node 18+ required).
-2. Start the dev server with `pnpm run dev`.
+## 👋 Hello — Why this repo exists
 
-pnpm is recommended but npm will work as well.
+I’m Jake Lawrence: implementation engineer by day, sci‑fi‑horror author by night, compulsive side‑project builder at all times. This repo powers **jakelawrence.io**—a single home for my:
 
-## Content editing guide
+| Section      | What you’ll find                                                                                    |
+| ------------ | --------------------------------------------------------------------------------------------------- |
+| **Apps**     | Small utilities and mini‑SaaS experiments demonstrating automation, AI workflows, and UX polish.    |
+| **Blog**     | Essays on generative AI, productivity engineering, and tech strategy—occasional dry humor included. |
+| **Novels**   | Draft chapters, cover art, and process notes for my in‑progress sci‑fi‑horror series *The Liminal*. |
+| **Work Lab** | Case studies of client projects and open‑source contributions.                                      |
+| **Music**    | Experimental tracks created with AI collaboration tools (because why not).                          |
 
-All pages are written in **MDX**. Blog posts live under `src/app/blog/posts` and project write‑ups under `src/app/work/projects`. Edit `src/resources/content.js` for profile details.
+Tech stack: **[Next.js 15](https://nextjs.org)** · **[Once UI](https://once-ui.com)** · React 19 · TypeScript · pnpm 10.
+
+---
+
+## Quick‑Start
+
+```bash
+# Clone
+git clone https://github.com/jake0lawrence/portfolio.git
+cd portfolio
+
+# Install (Node 20+ recommended)
+pnpm install   # fast, reproducible
+
+# Dev server
+pnpm dev       # http://localhost:3000
+```
+
+Production parity:
+
+```bash
+pnpm build && pnpm start
+```
+
+---
+
+## Editing Content
+
+| Content       | Path                               | Notes                         |
+| ------------- | ---------------------------------- | ----------------------------- |
+| Blog post     | `src/app/blog/posts/<slug>.mdx`    | MDX front‑matter required.    |
+| Case study    | `src/app/work/projects/<slug>.mdx` | Rich components allowed.      |
+| Novel chapter | `src/app/books/<slug>.mdx`         | Chapters + cover images.      |
+| Music drop    | `src/app/music/<slug>.mdx`         | Stream/embed links supported. |
+
+Front‑matter template:
+
+```mdx
+---
+title: "Title Here"
+publishedAt: 2025‑06‑28
+description: "One‑sentence summary for SEO & OG"
+---
+```
+
+---
+
+## CI/CD Overview
+
+1. **GitHub Actions** — lints, tests, builds on every push to `main`.
+2. **Deploy Job** — if build passes, hits secure webhook on DigitalOcean droplet.
+3. **Droplet Script** — pulls `main`, runs `pnpm install && pnpm build`, reloads PM2.
+4. **NGINX** proxies `https://` traffic to the PM2 process on :3000.
+
+Infrastructure details live in [`infra-playbook.md`](infra-playbook.md).
+
+---
+
+## Contribution Guidelines (humans & bots)
+
+* Follow [`AGENTS.md`](AGENTS.md) before your first commit.
+* Keep `pnpm lint && pnpm test && pnpm build` green.
+* Conventional commits (`feat:`, `fix:`, `docs:` …) please.
+* Open a Draft PR early; CI must pass before merge.
+
+---
+
+## Roadmap
+
+* [ ] Launch **AI‑narrated audio** version of each blog post.
+* [ ] Staging subdomain for automatic PR previews.
+* [ ] PWA offline support so readers can enjoy cosmic dread on airplanes.
+
+Feature ideas or bug reports? Open an Issue or ping [@jake0lawrence](https://github.com/jake0lawrence).
+
+---
 
 ## License
 
-Code and content are licensed under **CC BY‑NC 4.0**. This project was originally based on [Once UI](https://once-ui.com)'s Magic Portfolio template.
+Code and original content © 2025 Jake Lawrence — released under **CC BY‑NC 4.0**. Core template based on Once UI’s Magic Portfolio (MIT for code, CC for design).
 
+> Built with strong coffee, reliable tooling, and an enduring love of the unknown.
