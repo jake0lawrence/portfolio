@@ -21,20 +21,10 @@ import { getPosts } from "@/app/utils/utils";
 import { Metadata } from "next";
 
 /* ──────────────────────────────────────────────
-   Helpers
+   Helper: coerce unknown → string[]
 ─────────────────────────────────────────────── */
-// Always return an **array of strings** (never null/obj/num).
 const toStringArray = (value: unknown): string[] =>
   Array.isArray(value) ? value.map(String) : [];
-
-// Safe .includes for arrays/strings; always returns boolean ‍🛡️
-const safeIncludes = (
-  haystack: unknown,
-  needle: string
-): boolean =>
-  (Array.isArray(haystack) || typeof haystack === "string")
-    ? (haystack as any).includes(needle)
-    : false;
 
 /* ──────────────────────────────────────────────
    1. Static Params
@@ -61,7 +51,6 @@ export async function generateMetadata({
 
   const posts = getPosts(["src", "app", "blog", "posts"]);
   const post = posts.find((p) => p.slug === slugPath);
-
   if (!post) return {};
 
   return Meta.generate({
@@ -92,13 +81,11 @@ export default async function Blog({
     getPosts(["src", "app", "blog", "posts"]).find(
       (p) => p.slug === slugPath
     );
-
   if (!post) notFound();
 
-  /* ---------- Safety guards for meta fields ---------- */
-  const tags = toStringArray(post.metadata?.tags);
-  const isDraft = safeIncludes(tags, "draft");
-
+  /* ---------- SAFELY ACCESS OPTIONAL TAGS ---------- */
+  // The `Metadata` type in utils doesn't include `tags`, so we cast to `any`.
+  const tags = toStringArray((post.metadata as any)?.tags);
   const avatars =
     post.metadata.team?.map((p) => ({ src: p.avatar })) ?? [];
 
@@ -110,29 +97,27 @@ export default async function Blog({
       {/* Main content */}
       <Row fillWidth horizontal="center">
         <Column as="section" maxWidth="xs" gap="l">
-          {/* Schema.org ● only if not draft */}
-          {!isDraft && (
-            <Schema
-              as="blogPosting"
-              baseURL={baseURL}
-              path={`${blog.path}/${post.slug}`}
-              title={post.metadata.title}
-              description={post.metadata.summary}
-              datePublished={post.metadata.publishedAt}
-              dateModified={post.metadata.publishedAt}
-              image={
-                post.metadata.image ||
-                `/api/og/generate?title=${encodeURIComponent(
-                  post.metadata.title
-                )}`
-              }
-              author={{
-                name: person.name,
-                url: `${baseURL}${about.path}`,
-                image: `${baseURL}${person.avatar}`,
-              }}
-            />
-          )}
+          {/* Schema.org markup */}
+          <Schema
+            as="blogPosting"
+            baseURL={baseURL}
+            path={`${blog.path}/${post.slug}`}
+            title={post.metadata.title}
+            description={post.metadata.summary}
+            datePublished={post.metadata.publishedAt}
+            dateModified={post.metadata.publishedAt}
+            image={
+              post.metadata.image ||
+              `/api/og/generate?title=${encodeURIComponent(
+                post.metadata.title
+              )}`
+            }
+            author={{
+              name: person.name,
+              url: `${baseURL}${about.path}`,
+              image: `${baseURL}${person.avatar}`,
+            }}
+          />
 
           <Button
             data-border="rounded"
