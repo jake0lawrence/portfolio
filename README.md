@@ -6,7 +6,7 @@
 
 ---
 
-## 👋 Hello — Why this repo exists
+## 🤖 Hello — Why this repo exists
 
 I’m Jake Lawrence: implementation engineer by day, sci‑fi‑horror author by night, compulsive side‑project builder at all times. This repo powers **jakelawrence.io**—a single home for my:
 
