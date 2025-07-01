@@ -57,3 +57,4 @@ next-env.d.ts
 # test output
 dist-test/
 package.json.bak
+package-lock.json
