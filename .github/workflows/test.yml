@@ -1,0 +1,12 @@
+# .github/workflows/test.yml
+name: Unit Tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with: { version: 8 }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
