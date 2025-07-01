@@ -1,5 +1,12 @@
 # Jake Lawrence — Portfolio
 
+[![Lint & Type-check](https://github.com/jake0lawrence/portfolio/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/jake0lawrence/portfolio/actions/workflows/lint.yml)
+[![Unit Tests](https://github.com/jake0lawrence/portfolio/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/jake0lawrence/portfolio/actions/workflows/test.yml)
+[![Build](https://github.com/jake0lawrence/portfolio/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/jake0lawrence/portfolio/actions/workflows/build.yml)
+[![Deploy](https://github.com/jake0lawrence/portfolio/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/jake0lawrence/portfolio/actions/workflows/deploy.yml)
+![MIT License](https://img.shields.io/github/license/jake0lawrence/portfolio)
+
+
 *Apps · Writing · Engineering · Sci‑Fi Horror*
 
 [Live Site](https://jakelawrence.io) · [Blog](/blog) · [Work Lab](/work) · [Novels](/books) · [Music](/music)
