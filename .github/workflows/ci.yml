@@ -11,37 +11,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣  Check out the repo
       - uses: actions/checkout@v4
 
-      # 2️⃣  Install the exact pnpm version the lock-file expects
-      #     (you can swap this for your Corepack lines if you prefer)
-      - name: Setup pnpm 9.1.1
-        uses: pnpm/action-setup@v2
-        with:
-          version: 9.1.1          # ← matches your lockfile
-          run_install: false      # we’ll run install explicitly later
-
-      # 3️⃣  Setup Node and enable pnpm caching
+      # Node first
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
           cache-dependency-path: pnpm-lock.yaml
 
-      # 4️⃣  (Optional but useful) show exactly what versions we’re on
-      - run: |
-          node --version
-          pnpm --version
+      # pnpm second → now at the front of PATH
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9.1.1
+          run_install: false     # we'll run install ourselves
 
-      # 5️⃣  Install deps strictly from the lock-file
+      - run: pnpm --version      # should print 9.1.1
       - run: pnpm install --frozen-lockfile
-
-      # 6️⃣  Type-check / lint
       - run: pnpm run lint
-
-      # 7️⃣  Unit tests
       - run: pnpm test -- --ci
-
-      # 8️⃣  Build
       - run: pnpm run build
