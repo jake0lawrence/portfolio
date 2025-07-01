@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request: {}
+
+env:
+  NODE_VERSION: '20'    # Runtime you actually use
+  PNPM_VERSION: '9.1.1' # ← matches the lock-file & packageManager field
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Grab your code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Install BOTH pnpm (v9) and Node 20
+      - name: Setup pnpm + Node
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          run_install: false   # we’ll call pnpm ourselves
+
+      # 3. Cache pnpm’s global store between runs
+      - name: Restore pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      # 4. Install deps strictly against the lock-file
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 5. Lint & type-check (adjust if you renamed these scripts)
+      - name: Lint and type-check
+        run: |
+          pnpm lint
+          pnpm test       # your `node --test` suite
+          pnpm run typecheck || true   # if you have one
+
+      # 6. Build
+      - name: Build
+        run: pnpm build
