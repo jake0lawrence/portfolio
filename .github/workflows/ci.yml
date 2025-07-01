@@ -1,0 +1,112 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: ['**']
+
+permissions:
+  contents: read
+
+env:
+  # Disable Next.js / React telemetry during CI
+  NEXT_TELEMETRY_DISABLED: '1'
+
+jobs:
+# ────────────────────────────────────────────────────────────────────────────────
+#  Lint + Type-check
+# ────────────────────────────────────────────────────────────────────────────────
+  lint-typecheck:
+    name: Lint & Type-check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Set up Node and cache the pnpm store
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      # Bring in the exact pnpm version declared in package.json
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9.1.1       # keep in sync with `packageManager` field
+          run_install: false   # we’ll call pnpm ourselves
+
+      # Install dependencies strictly from lockfile
+      - run: pnpm install --frozen-lockfile
+
+      # Lint and TS type-check (assumes you have scripts named lint / type-check)
+      - run: pnpm lint
+      - run: pnpm type-check
+
+# ────────────────────────────────────────────────────────────────────────────────
+#  Unit tests
+# ────────────────────────────────────────────────────────────────────────────────
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: lint-typecheck     # only run if lint & typecheck passed
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9.1.1
+          run_install: false
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test -- --ci
+
+# ────────────────────────────────────────────────────────────────────────────────
+#  Build
+# ────────────────────────────────────────────────────────────────────────────────
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: test               # only run if tests passed
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9.1.1
+          run_install: false
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      # Optionally upload the build artifact so later jobs can reuse it
+      - name: Upload production build
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: .next
+          if-no-files-found: error
+
+# ────────────────────────────────────────────────────────────────────────────────
+#  Deploy to DigitalOcean
+# ────────────────────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to DigitalOcean
+    runs-on: ubuntu-latest
+    needs: build              # only deploy if build succeeded
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Example DigitalOcean App Platform deploy
+      - uses: digitalocean/app-action@v2
+        with:
+          app_name: ${{ secrets.DO_APP_NAME }}   # set in repo secrets
+          token:    ${{ secrets.DO_API_TOKEN }}  # set in repo secrets
