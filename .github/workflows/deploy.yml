@@ -5,10 +5,21 @@ on:
     branches:
       - main
 
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9.1.1'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - name: Setup pnpm + Node
+      uses: pnpm/action-setup@v2
+      with:
+        version: ${{ env.PNPM_VERSION }}
+        node-version: ${{ env.NODE_VERSION }}
+        run_install: false
+
     - name: Deploy via SSH
       uses: appleboy/ssh-action@v1.0.0
       with:
@@ -18,5 +29,5 @@ jobs:
         script: |
           cd /var/www/jakelawrence.io
           git pull origin main
-          npm install
+          pnpm install --frozen-lockfile
           pm2 restart portfolio
