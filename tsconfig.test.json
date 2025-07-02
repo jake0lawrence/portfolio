@@ -6,7 +6,7 @@
     "outDir": "dist-test",
 
     /* Node test-runner friendly */
-    "module": "CommonJS",
+    "module": "ESNext",
     "moduleResolution": "node",
     "types": ["node"]
   },
