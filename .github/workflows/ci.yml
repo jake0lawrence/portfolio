@@ -40,14 +40,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # 5) Lint, test, (optional) type-check
-      - name: Lint, tests, type-check
-        run: |
-          pnpm lint
-          pnpm test
-          # If you have a separate script for TS checks, uncomment:
-          # pnpm run typecheck
+      # 5) Lint & Type-check
+      - name: Lint & Type-check
+        run: pnpm lint && pnpm type-check
 
-      # 6) Build
+      # 6) Unit Tests
+      - name: Unit Tests
+        run: pnpm test
+
+      # 7) Build
       - name: Build
         run: pnpm build
