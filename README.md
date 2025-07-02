@@ -4,7 +4,7 @@
 [![Unit Tests](https://github.com/jake0lawrence/portfolio/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/jake0lawrence/portfolio/actions/workflows/test.yml)
 [![Build](https://github.com/jake0lawrence/portfolio/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/jake0lawrence/portfolio/actions/workflows/build.yml)
 [![Deploy](https://github.com/jake0lawrence/portfolio/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/jake0lawrence/portfolio/actions/workflows/deploy.yml)
-![MIT License](https://img.shields.io/github/license/jake0lawrence/portfolio)
+![MIT License](https://img.shields.io/github/license/jake0lawrence/portfolio?cacheSeconds=30)
 
 
 *Apps · Writing · Engineering · Sci‑Fi Horror*
