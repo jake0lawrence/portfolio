@@ -25,7 +25,7 @@ I’m Jake Lawrence: implementation engineer by day, sci‑fi‑horror author 
 | **Work Lab** | Case studies of client projects and open‑source contributions.                                      |
 | **Music**    | Experimental tracks created with AI collaboration tools (because why not).                          |
 
-Tech stack: **[Next.js 15](https://nextjs.org)** · **[Once UI](https://once-ui.com)** · React 19 · TypeScript · pnpm 10.
+Tech stack: **[Next.js 15](https://nextjs.org)** · **[Once UI](https://once-ui.com)** · React 19 · TypeScript · pnpm 9.1.1 (pinned).
 
 ---
 
