@@ -1,8 +1,6 @@
 # Jake Lawrence — Portfolio
 
-[![Lint & Type-check](https://github.com/jake0lawrence/portfolio/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/jake0lawrence/portfolio/actions/workflows/lint.yml)
-[![Unit Tests](https://github.com/jake0lawrence/portfolio/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/jake0lawrence/portfolio/actions/workflows/test.yml)
-[![Build](https://github.com/jake0lawrence/portfolio/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/jake0lawrence/portfolio/actions/workflows/build.yml)
+[![CI](https://github.com/jake0lawrence/portfolio/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/jake0lawrence/portfolio/actions/workflows/ci.yml)
 [![Deploy](https://github.com/jake0lawrence/portfolio/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/jake0lawrence/portfolio/actions/workflows/deploy.yml)
 ![MIT License](https://img.shields.io/github/license/jake0lawrence/portfolio?cacheSeconds=30)
 
