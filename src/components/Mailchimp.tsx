@@ -1,9 +1,9 @@
 "use client";
 
 import { mailchimp } from "@/resources";
-import { Button, Flex, Heading, Input, Text, Background, Column } from "@once-ui-system/core";
+import { Button, Flex, Heading, Input, Text, Background, Column, IconButton } from "@once-ui-system/core";
 import { opacity, SpacingToken } from "@once-ui-system/core";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 function debounce<T extends (...args: any[]) => void>(func: T, delay: number): T {
   let timeout: ReturnType<typeof setTimeout>;
@@ -23,6 +23,8 @@ export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [touched, setTouched] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const validateEmail = (email: string): boolean => {
     if (email === "") {
@@ -52,6 +54,52 @@ export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
       setError("Please enter a valid email address.");
     }
   };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateEmail(email) && email) {
+      setError("");
+    }
+    setModalOpen(true);
+  };
+
+  useEffect(() => {
+    if (!modalOpen) return;
+    const element = modalRef.current;
+    if (!element) return;
+
+    const focusable = element.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const previous = document.activeElement as HTMLElement | null;
+    first?.focus();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setModalOpen(false);
+      } else if (e.key === 'Tab') {
+        if (focusable.length === 0) return;
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            (last as HTMLElement).focus();
+          }
+        } else if (document.activeElement === last) {
+          e.preventDefault();
+          (first as HTMLElement).focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      previous?.focus();
+    };
+  }, [modalOpen]);
 
   return (
     <Column
@@ -127,10 +175,7 @@ export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
           display: "flex",
           justifyContent: "center",
         }}
-        action={mailchimp.action}
-        method="post"
-        id="mc-embedded-subscribe-form"
-        name="mc-embedded-subscribe-form"
+        onSubmit={handleSubmit}
       >
         <Flex id="mc_embed_signup_scroll" fillWidth maxWidth={24} mobileDirection="column" gap="8">
           <Input
@@ -150,29 +195,6 @@ export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
             onBlur={handleBlur}
             errorMessage={error}
           />
-          <div style={{ display: "none" }}>
-            <input
-              type="checkbox"
-              readOnly
-              name="group[3492][1]"
-              id="mce-group[3492]-3492-0"
-              value=""
-              checked
-            />
-          </div>
-          <div id="mce-responses" className="clearfalse">
-            <div className="response" id="mce-error-response" style={{ display: "none" }}></div>
-            <div className="response" id="mce-success-response" style={{ display: "none" }}></div>
-          </div>
-          <div aria-hidden="true" style={{ position: "absolute", left: "-5000px" }}>
-            <input
-              type="text"
-              readOnly
-              name="b_c1a5a210340eb6c7bff33b2ba_0462d244aa"
-              tabIndex={-1}
-              value=""
-            />
-          </div>
           <div className="clear">
             <Flex height="48" vertical="center">
               <Button id="mc-embedded-subscribe" value="Subscribe" size="m" fillWidth>
@@ -182,6 +204,41 @@ export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
           </div>
         </Flex>
       </form>
+      {modalOpen && (
+        <Flex
+          position="fixed"
+          top="0"
+          left="0"
+          right="0"
+          bottom="0"
+          zIndex={10}
+          background="neutral-alpha-weak"
+          horizontal="center"
+          vertical="center"
+        >
+          <Column
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            padding="l"
+            radius="l"
+            background="page"
+            style={{ position: 'relative', maxWidth: '20rem' }}
+            gap="8"
+          >
+            <IconButton
+              style={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }}
+              aria-label="Close"
+              icon="close"
+              variant="ghost"
+              onClick={() => setModalOpen(false)}
+            />
+            <Text align="center" wrap="balance">
+              I said the newsletter is coming soon! Check back next week.
+            </Text>
+          </Column>
+        </Flex>
+      )}
     </Column>
   );
 };

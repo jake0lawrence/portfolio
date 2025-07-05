@@ -16,7 +16,7 @@ const person = {
 const newsletter = {
   display: true,
   title: 'Stay in the Loop',
-  description: 'Monthly drop of code, essays, and music.',
+  description: 'The newsletter launches soon—check back next week.',
 };
 
 const social = [
