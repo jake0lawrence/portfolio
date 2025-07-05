@@ -25,22 +25,12 @@ const social = [
   {
     name: 'GitHub',
     icon: 'github',
-    link: 'https://github.com/jakelaw-tools',
-  },
-  {
-    name: 'X',
-    icon: 'x',
-    link: 'https://x.com/jakelawdev',
-  },
-  {
-    name: 'Bandcamp',
-    icon: 'bandcamp',
-    link: 'https://jakelaw.bandcamp.com',
+    link: 'https://github.com/jake0lawrence',
   },
   {
     name: 'Email',
     icon: 'email',
-    link: 'mailto:jake@jakelawrence.io',
+    link: 'mailto:hello@jakelawrence.io',
   },
 ];
 
