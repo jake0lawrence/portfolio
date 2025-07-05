@@ -14,6 +14,7 @@ import {
 } from "@once-ui-system/core";
 import { baseURL, about, person, social } from "@/resources";
 import TableOfContents from "@/components/about/TableOfContents";
+import ScheduleCallModal from "./ScheduleCallModal";
 import styles from "@/components/about/about.module.scss";
 import React from "react";
 
@@ -130,12 +131,7 @@ export default function About() {
               >
                 <Icon paddingLeft="12" name="calendar" onBackground="brand-weak" />
                 <Flex paddingX="8">Schedule a call</Flex>
-                <IconButton
-                  href={about.calendar.link}
-                  data-border="rounded"
-                  variant="secondary"
-                  icon="chevronRight"
-                />
+                <ScheduleCallModal />
               </Flex>
             )}
             <Heading className={styles.textAlign} variant="display-strong-xl">

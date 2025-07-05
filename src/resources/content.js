@@ -10,7 +10,7 @@ const person = {
   avatar: '/images/avatar.jpg',
   email: 'example@gmail.com',
   location: 'America/Chicago', // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-  languages: ['English', 'Bahasa'], // optional: Leave the array empty if you don't want to display languages
+  languages: ['English'], // optional: Leave the array empty if you don't want to display languages
 };
 
 const newsletter = {
