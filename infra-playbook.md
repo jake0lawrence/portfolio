@@ -227,15 +227,14 @@ pm2 startup systemd -u root --hp /root
 %% CI → Deploy overview
 flowchart TD
   A[Push<br/>main] --> B[CI job<br/>lint·test·build]
-  B -->|✓| C[Deploy job<br/>curl /deploy?secret=…]
-  C --> D[Webhook<br/>9001]
-  D --> E[/opt/deploy/portfolio.sh/]
-  E --> PM2[PM2 process]
+  B -->|✓| C[Deploy job<br/>SSH → deploy script]
+  C --> D[/opt/deploy/portfolio.sh/]
+  D --> PM2[PM2 process]
   PM2 --> APP[Next.js<br/>:3000]
 ```
 
 * **CI job** – Node 20 + pnpm 10, then `lint`, `test`, `build`.
-* **Deploy job** – only runs when CI passes; `curl` hits secure webhook.
+* **Deploy job** – only runs when CI passes; uses SSH to run the deploy script.
 
 Secrets required: `WEBHOOK_URL`, `WEBHOOK_SECRET`, `DO_SSH_KEY`, `DO_HOST`.
 
@@ -262,7 +261,9 @@ Secrets required: `WEBHOOK_URL`, `WEBHOOK_SECRET`, `DO_SSH_KEY`, `DO_HOST`.
 
 ---
 
-### Quick deploy
+### Manual deploy (optional)
+
+`curl`ing the webhook still works for ad‑hoc redeploys:
 
 ```bash
 curl -s "https://jakelawrence.io/deploy?secret=SUPERSECRET123"

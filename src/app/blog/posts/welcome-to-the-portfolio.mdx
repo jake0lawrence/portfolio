@@ -61,17 +61,16 @@ Below is the **DAG** my CI/CD pipeline follows whenever I push to `main`.
 flowchart TD
     subgraph GitHub Actions
         LINT[Lint] --> TEST[Test] --> BUILD[Next build]
-        BUILD --> DEPLOY[cURL webhook]
+        BUILD --> DEPLOY[SSH deploy]
     end
 
-    DEPLOY --> Webhook[/Webhook 9001/]
-    Webhook --> Script[[/opt/deploy/portfolio.sh]]
+    DEPLOY --> Script[[/opt/deploy/portfolio.sh]]
     Script --> PM2[PM2 reload]
     PM2 --> NGINX[(NGINX 443)]
     NGINX --> Browser[🧑‍💻 You]
 ```
 
-* **All green?** A secure webhook hits my [DigitalOcean droplet](https://docs.digitalocean.com/products/droplets/).
+* **All green?** A GitHub Action logs into my [DigitalOcean droplet](https://docs.digitalocean.com/products/droplets/) over SSH.
 * The droplet script pulls latest, runs `pnpm build`, and reloads **PM2**.
 * **NGINX** proxies HTTPS traffic to port 3000. Zero-downtime, no drama.
 
@@ -109,7 +108,7 @@ Time dilation fees not included.
 | **[Once UI](https://once-ui.com)** | Customised theme, dark-mode              |
 | **pnpm 9.1.1**                     | Fast, deterministic installs (pinned)    |
 | **TypeScript**                     | `strict`—no `any` in production code     |
-| **CI/CD**                          | GitHub Actions → Webhook → PM2           |
+| **CI/CD**                          | GitHub Actions → SSH → PM2           |
 | **Docs**                           | [`AGENTS.md`](/AGENTS.md) (coding rules) |
 
 ---
