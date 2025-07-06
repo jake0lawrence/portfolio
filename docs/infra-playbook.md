@@ -235,8 +235,8 @@ Log rotation already provided by `pm2-logrotate` (installed automatically).
 
 ```text
 1. Commit & push → origin/main
-2. curl -s "https://jakelawrence.io/deploy?secret=SUPERSECRET123"
-3. journalctl -fu webhook   # optional tail
+2. GitHub Action connects via SSH and runs `/opt/deploy/portfolio.sh`
+3. journalctl -fu webhook   # optional tail (manual webhook still works)
 ```
 
 Typical deploy time: **\~50 s** (install ≈ 20 s, build ≈ 25 s, reload < 1 s).
@@ -259,7 +259,7 @@ Typical deploy time: **\~50 s** (install ≈ 20 s, build ≈ 25 s, rel
 
 * Move runtime to unprivileged `deploy` user instead of `root`.
 * Put Cloudflare in front for DDoS & caching.
-* Turn deploy script into GitHub Action (SSH) to remove public webhook.
+* Public webhook replaced by GitHub Action that runs the deploy script over SSH.
 * Migrate to Docker (next‑on‑pages, Caddy, etc.) if containerisation is needed.
 
 ---
@@ -274,7 +274,7 @@ Typical deploy time: **\~50 s** (install ≈ 20 s, build ≈ 25 s, rel
 
 ---
 
-Happy shipping!  One command and you’re live:
+Happy shipping!  Manual redeploys are still possible:
 
 ```bash
 curl -s "https://jakelawrence.io/deploy?secret=SUPERSECRET123"

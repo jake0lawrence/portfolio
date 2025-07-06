@@ -29,5 +29,6 @@ jobs:
         script: |
           cd /var/www/jakelawrence.io
           git pull origin main
-          pnpm install --frozen-lockfile
+          pnpm install --silent
+          pnpm build
           pm2 restart portfolio
