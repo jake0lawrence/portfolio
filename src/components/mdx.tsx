@@ -76,7 +76,10 @@ function slugify(str: string): string {
 
 function createHeading(as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6") {
   const CustomHeading = ({ children, ...props }: Omit<React.ComponentProps<typeof HeadingLink>, 'as' | 'id'>) => {
-    const slug = slugify(children as string);
+    const text = React.Children.toArray(children)
+      .map((child) => (typeof child === 'string' ? child : ''))
+      .join('');
+    const slug = slugify(text);
     return (
       <HeadingLink
         marginTop="24"
@@ -170,6 +173,7 @@ const components = {
   Icon: dynamic(() => import("@once-ui-system/core").then(mod => mod.Icon)),
   Media: dynamic(() => import("@once-ui-system/core").then(mod => mod.Media)),
   SmartLink: dynamic(() => import("@once-ui-system/core").then(mod => mod.SmartLink)),
+  Callout: dynamic(() => import("@/components/Callout")),
 };
 
 type CustomMDXProps = MDXRemoteProps & {
