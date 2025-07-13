@@ -14,6 +14,7 @@ import {
 import { CodeBlock } from "@once-ui-system/core";
 import { TextProps } from "@once-ui-system/core";
 import { MediaProps } from "@once-ui-system/core";
+import MarkdownTable from "@/components/MarkdownTable";
 
 type CustomLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;
@@ -163,7 +164,7 @@ const components = {
   a: CustomLink as any,
   code: createInlineCode as any,
   pre: createCodeBlock as any,
-  table: dynamic(() => import('@once-ui-system/core').then(mod => mod.Table)) as any,
+  table: MarkdownTable as any,
   Heading,
   Text,
   CodeBlock,
