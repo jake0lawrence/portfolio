@@ -15,6 +15,16 @@ const nextConfig = {
     compiler: 'modern',
     silenceDeprecations: ['legacy-js-api'],
   },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
+    ],
+  },
 };
 
 export default withMDX(nextConfig);
