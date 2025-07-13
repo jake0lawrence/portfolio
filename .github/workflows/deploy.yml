@@ -28,15 +28,21 @@ jobs:
         key: ${{ secrets.DO_SSH_KEY }}
         script: /opt/deploy/portfolio.sh
 
-    - name: Download deploy log
-      uses: appleboy/scp-action@v0.1.4
+    - name: Fetch deploy log
+      uses: appleboy/ssh-action@v1.0.0
       if: always()
+      id: fetch_log
       with:
         host: ${{ secrets.DO_HOST }}
         username: root
         key: ${{ secrets.DO_SSH_KEY }}
-        source: /var/log/portfolio-deploy.log
-        target: ./deploy-log
+        script: cat /var/log/portfolio-deploy.log
+        capture_stdout: true
+
+    - name: Write deploy log file
+      run: |
+        mkdir -p deploy-log
+        echo "${{ steps.fetch_log.outputs.stdout }}" > deploy-log/portfolio-deploy.log
 
     - name: Upload deploy log
       uses: actions/upload-artifact@v4
