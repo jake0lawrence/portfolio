@@ -11,3 +11,5 @@ export { CustomMDX } from "@/components/mdx";
 export { default as ProjectPreview } from "@/components/work/ProjectPreview";
 export { default as Callout } from "@/components/Callout";
 export { default as Mermaid } from "@/components/Mermaid";
+export { default as TypewriterText } from "@/components/TypewriterText";
+export { default as AnimatedSignalPulse } from "@/components/AnimatedSignalPulse";
