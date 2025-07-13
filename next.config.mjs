@@ -10,6 +10,8 @@ const withMDX = mdx({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Allow custom build directory via NEXT_BUILD_DIR for atomic deploys
+  distDir: process.env.NEXT_BUILD_DIR || '.next',
   // Put .md/.mdx first so they win if a slug collides with a .tsx file
   pageExtensions: ['md', 'mdx', 'ts', 'tsx'],
 

@@ -180,26 +180,43 @@ systemctl enable --now webhook
 
 ```bash
 #!/usr/bin/env bash
-set -euxo pipefail   # echo every cmd, exit on failure, pipefail strict
+set -euxo pipefail
+
+# Log everything to /var/log for debugging
+exec > >(tee -a /var/log/portfolio-deploy.log) 2>&1
 
 REPO_DIR=/var/www/jakelawrence.io
-PNPM=/usr/local/bin/pnpm      # `which pnpm`
+PNPM=/usr/local/bin/pnpm
 
 echo "🚀  Deploy started at $(date -u)"
+echo "Working directory: $REPO_DIR"
+node --version
+"$PNPM" --version
+pm2 list
 
-# 1) Sync code, keep previous .next build for tracing step
+# 1) Sync code, keep previous build until new one succeeds
 git -C "$REPO_DIR" fetch --all
 git -C "$REPO_DIR" reset --hard origin/main
 git -C "$REPO_DIR" clean -fd -e .next
 
 # 2) Install deps
 cd "$REPO_DIR"
-"$PNPM" install --silent             # no --frozen-lockfile; lockfile auto‑upgrades
+"$PNPM" install --silent
 
-# 3) Build production bundle
-"$PNPM" build                       # Next.js 15 build
+# 3) Atomic build into .next-temp
+BUILD_DIR=.next-temp
+rm -rf "$BUILD_DIR"
+NEXT_BUILD_DIR="$BUILD_DIR" "$PNPM" build
 
-# 4) Reload or start PM2
+# 4) Replace build if successful
+if [ -d "$BUILD_DIR" ]; then
+  rm -rf .next.bak
+  mv .next .next.bak || true
+  mv "$BUILD_DIR" .next
+  rm -rf .next.bak
+fi
+
+# 5) Reload or start PM2
 if pm2 describe portfolio >/dev/null 2>&1; then
   pm2 reload portfolio --update-env
 else
