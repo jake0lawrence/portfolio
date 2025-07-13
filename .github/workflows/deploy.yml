@@ -12,41 +12,50 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Setup pnpm + Node
+    # 1 — Toolchain (kept for future lint/test)
+    - name: Set up pnpm + Node
       uses: pnpm/action-setup@v2
       with:
         version: ${{ env.PNPM_VERSION }}
         node-version: ${{ env.NODE_VERSION }}
         run_install: false
 
+    # 2 — Run the atomic deploy script on the droplet
     - name: Deploy via SSH
       uses: appleboy/ssh-action@v1.0.0
       with:
-        host: ${{ secrets.DO_HOST }}
+        host: ${{ secrets.DO_HOST }}      # e.g. 198.199.x.x
         username: root
-        key: ${{ secrets.DO_SSH_KEY }}
-        script: /opt/deploy/portfolio.sh
+        key: ${{ secrets.DO_SSH_KEY }}    # your private-key secret
+        script: |
+          set -e
+          /opt/deploy/portfolio.sh
 
+    # 3 — Grab the deploy log even if the step above fails
     - name: Fetch deploy log
-      uses: appleboy/ssh-action@v1.0.0
       if: always()
-      id: fetch_log
+      uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.DO_HOST }}
         username: root
         key: ${{ secrets.DO_SSH_KEY }}
         script: cat /var/log/portfolio-deploy.log
         capture_stdout: true
+      id: fetch_log
 
+    # 4 — Save the log as an artifact
+    - name: Upload deploy log
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: deploy-log
+        path: |
+          ${{ github.workspace }}/deploy-log/portfolio-deploy.log
+      # create the file first
     - name: Write deploy log file
+      if: always()
       run: |
         mkdir -p deploy-log
         echo "${{ steps.fetch_log.outputs.stdout }}" > deploy-log/portfolio-deploy.log
-
-    - name: Upload deploy log
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: deploy-log
-        path: deploy-log/portfolio-deploy.log
