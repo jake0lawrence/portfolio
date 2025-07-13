@@ -5,15 +5,13 @@ import { Column, Flex, Heading, Media, SmartLink, Text } from '@once-ui-system/c
 interface TheLiminalCardProps {
   cover: string;
   synopsis: string;
-  buyLink: string;
-  sampleLink: string;
+  readLink: string;
 }
 
 export default function TheLiminalCard({
   cover,
   synopsis,
-  buyLink,
-  sampleLink,
+  readLink,
 }: TheLiminalCardProps) {
   return (
     <Column gap="m" padding="24" radius="l" border="neutral-alpha-weak" fillWidth>
@@ -25,11 +23,8 @@ export default function TheLiminalCard({
         {synopsis}
       </Text>
       <Flex gap="24" wrap>
-        <SmartLink href={buyLink} prefixIcon="book">
-          <Text variant="body-default-s">Buy</Text>
-        </SmartLink>
-        <SmartLink href={sampleLink} prefixIcon="document">
-          <Text variant="body-default-s">Sample</Text>
+        <SmartLink href={readLink} prefixIcon="book">
+          <Text variant="body-default-s">Read</Text>
         </SmartLink>
       </Flex>
     </Column>
