@@ -7,10 +7,9 @@ export default function Books() {
       <Heading variant="display-strong-s">Books</Heading>
       <Grid columns="3" mobileColumns="1">
         <TheLiminalCard
-          cover="/images/projects/project-01/image-01.jpg"
-          synopsis="A speculative fiction novel about crossing realities."
-          buyLink="#"
-          sampleLink="#"
+          cover="https://i.imgur.com/ixuC2W8h.jpg"
+          synopsis="In the darkness between dimensions, something ancient is waking. The Liminal is a sci-fi horror descent into fractured time, shifting realities, and a voice that isn’t yours."
+          readLink="https://books.jakelawrence.io/2/the-liminal"
         />
       </Grid>
     </Column>
