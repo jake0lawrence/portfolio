@@ -26,9 +26,21 @@ jobs:
         host: ${{ secrets.DO_HOST }}
         username: root
         key: ${{ secrets.DO_SSH_KEY }}
-        script: |
-          cd /var/www/jakelawrence.io
-          git pull origin main
-          pnpm install --silent
-          pnpm build
-          pm2 restart portfolio
+        script: /opt/deploy/portfolio.sh
+
+    - name: Download deploy log
+      uses: appleboy/scp-action@v0.1.4
+      if: always()
+      with:
+        host: ${{ secrets.DO_HOST }}
+        username: root
+        key: ${{ secrets.DO_SSH_KEY }}
+        source: /var/log/portfolio-deploy.log
+        target: ./deploy-log
+
+    - name: Upload deploy log
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: deploy-log
+        path: deploy-log/portfolio-deploy.log
