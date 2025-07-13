@@ -32,6 +32,7 @@ test('welcome post table renders', () => {
       Callout: () => null,
       Image: () => null,
       PulseHeader: () => null,
+      Media: () => null,
     }),
   });
 
