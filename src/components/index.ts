@@ -13,4 +13,5 @@ export { default as Callout } from "@/components/Callout";
 export { default as Mermaid } from "@/components/Mermaid";
 export { default as TypewriterText } from "@/components/TypewriterText";
 export { default as AnimatedSignalPulse } from "@/components/AnimatedSignalPulse";
+export { default as PulseHeader } from "@/components/PulseHeader";
 export { default as MarkdownTable } from "@/components/MarkdownTable";

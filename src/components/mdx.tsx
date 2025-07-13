@@ -183,6 +183,7 @@ const components = {
   SmartLink: dynamic(() => import("@once-ui-system/core").then(mod => mod.SmartLink)),
   Callout: dynamic(() => import("@/components/Callout")),
   Mermaid: dynamic(() => import("@/components/Mermaid")),
+  PulseHeader: dynamic(() => import("@/components/PulseHeader")),
   AnimatedSignalPulse: dynamic(() => import("@/components/AnimatedSignalPulse")),
 };
 
