@@ -8,10 +8,15 @@ tags: ["welcome", "overview"]
 
 import Image from "next/image";
 import Callout from "@/components/Callout";
+import { AnimatedSignalPulse } from "@/components";
 
 /* ---------------------------------------------------------
    1  Opening Pulse
 --------------------------------------------------------- */
+
+<div className="mt-10 mb-4">
+  <AnimatedSignalPulse id="0x01" label="Opening Pulse" glow="gold" />
+</div>
 
 # 👋 Hey there — Jake here!
 
@@ -30,7 +35,9 @@ Peek at <a href="https://github.com/jake0lawrence/portfolio">the repo →</a>
 
 ---
 
-## 2  The Content Constellation 🌌
+<div className="mt-10 mb-4">
+  <AnimatedSignalPulse id="0x02" label="Content Constellation" glow="indigo" />
+</div>
 
 ```mermaid
 flowchart LR
@@ -53,7 +60,9 @@ flowchart LR
 
 ---
 
-## 3  From Commit to Production in ≈ 90 s 🚀
+<div className="mt-10 mb-4">
+  <AnimatedSignalPulse id="0x03" label="Build Pipeline" glow="green" />
+</div>
 
 Below is the **DAG** my CI/CD pipeline follows whenever I push to `main`.
 
@@ -100,7 +109,9 @@ Time dilation fees not included.
 
 ---
 
-## 5  Tech Stack in 60 seconds
+<div className="mt-10 mb-4">
+  <AnimatedSignalPulse id="0x04" label="Stack Trace Log" glow="gold" />
+</div>
 
 | Layer                              | Highlights                               |
 | ---------------------------------- | ---------------------------------------- |
@@ -113,7 +124,9 @@ Time dilation fees not included.
 
 ---
 
-## 6  What’s Next?
+<div className="mt-10 mb-4">
+  <AnimatedSignalPulse id="0x05" label="Signal: What’s Next?" glow="indigo" />
+</div>
 
 * **AI-narrated audio** for every blog post
 * **PR preview subdomain**
