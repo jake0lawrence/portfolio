@@ -31,7 +31,7 @@ test('welcome post table renders', () => {
     useMDXComponents: () => ({
       Callout: () => null,
       Image: () => null,
-      AnimatedSignalPulse: () => null,
+      PulseHeader: () => null,
     }),
   });
 

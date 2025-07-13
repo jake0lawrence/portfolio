@@ -8,15 +8,13 @@ tags: ["welcome", "overview"]
 
 import Image from "next/image";
 import Callout from "@/components/Callout";
-import { AnimatedSignalPulse } from "@/components";
+import { PulseHeader } from "@/components";
 
 /* ---------------------------------------------------------
    1  Opening Pulse
 --------------------------------------------------------- */
 
-<div className="mt-10 mb-4">
-  <AnimatedSignalPulse id="0x01" label="Opening Pulse" glow="gold" />
-</div>
+<PulseHeader id="0x01" label="Opening Pulse" glow="gold" />
 
 # 👋 Hey there — Jake here!
 
@@ -35,9 +33,7 @@ Peek at <a href="https://github.com/jake0lawrence/portfolio">the repo →</a>
 
 ---
 
-<div className="mt-10 mb-4">
-  <AnimatedSignalPulse id="0x02" label="Content Constellation" glow="indigo" />
-</div>
+<PulseHeader id="0x02" label="Content Constellation" glow="indigo" />
 
 ```mermaid
 flowchart LR
@@ -60,9 +56,7 @@ flowchart LR
 
 ---
 
-<div className="mt-10 mb-4">
-  <AnimatedSignalPulse id="0x03" label="Build Pipeline" glow="green" />
-</div>
+<PulseHeader id="0x03" label="Build Pipeline" glow="green" />
 
 Below is the **DAG** my CI/CD pipeline follows whenever I push to `main`.
 
@@ -87,7 +81,7 @@ Want the gritty details? See the **[`infra-playbook.md`](/infra-playbook.md)**.
 
 ---
 
-## 4  MDX Everywhere ✨
+<PulseHeader id="0x06" label="MDX Everywhere" glow="green" />
 
 All posts, chapters, and case studies are plain **MDX**. Example front-matter:
 
@@ -109,9 +103,7 @@ Time dilation fees not included.
 
 ---
 
-<div className="mt-10 mb-4">
-  <AnimatedSignalPulse id="0x04" label="Stack Trace Log" glow="gold" />
-</div>
+<PulseHeader id="0x04" label="Stack Trace Log" glow="gold" />
 
 | Layer                              | Highlights                               |
 | ---------------------------------- | ---------------------------------------- |
@@ -124,9 +116,7 @@ Time dilation fees not included.
 
 ---
 
-<div className="mt-10 mb-4">
-  <AnimatedSignalPulse id="0x05" label="Signal: What’s Next?" glow="indigo" />
-</div>
+<PulseHeader id="0x05" label="Signal: What’s Next?" glow="indigo" />
 
 * **AI-narrated audio** for every blog post
 * **PR preview subdomain**
@@ -136,7 +126,7 @@ Time dilation fees not included.
 
 ---
 
-## 7  Thanks for Dropping By
+<PulseHeader id="0x07" label="Thanks for Dropping By" glow="gold" />
 
 Whether you’re a potential client, future employer, or fellow night-owl tinkerer—explore, fork the repo, or just read a chapter of *The Liminal* before bed (sleep tight!).
 
