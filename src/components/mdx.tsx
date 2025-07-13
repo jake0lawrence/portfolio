@@ -124,7 +124,12 @@ function createCodeBlock(props: any) {
     // Extract language from className (format: language-xxx)
     const language = className.replace('language-', '');
     const label = language.charAt(0).toUpperCase() + language.slice(1);
-    
+
+    if (language === 'mermaid') {
+      const Mermaid = require('./Mermaid').default;
+      return <Mermaid>{children}</Mermaid>;
+    }
+
     return (
       <CodeBlock
         marginTop="8"
@@ -133,8 +138,8 @@ function createCodeBlock(props: any) {
           {
             code: children,
             language,
-            label
-          }
+            label,
+          },
         ]}
         copyButton={true}
       />
@@ -157,6 +162,7 @@ const components = {
   a: CustomLink as any,
   code: createInlineCode as any,
   pre: createCodeBlock as any,
+  table: dynamic(() => import('@once-ui-system/core').then(mod => mod.Table)) as any,
   Heading,
   Text,
   CodeBlock,
@@ -174,6 +180,7 @@ const components = {
   Media: dynamic(() => import("@once-ui-system/core").then(mod => mod.Media)),
   SmartLink: dynamic(() => import("@once-ui-system/core").then(mod => mod.SmartLink)),
   Callout: dynamic(() => import("@/components/Callout")),
+  Mermaid: dynamic(() => import("@/components/Mermaid")),
 };
 
 type CustomMDXProps = MDXRemoteProps & {

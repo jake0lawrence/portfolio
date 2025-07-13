@@ -10,3 +10,4 @@ export { ThemeToggle } from "@/components/ThemeToggle";
 export { CustomMDX } from "@/components/mdx";
 export { default as ProjectPreview } from "@/components/work/ProjectPreview";
 export { default as Callout } from "@/components/Callout";
+export { default as Mermaid } from "@/components/Mermaid";
