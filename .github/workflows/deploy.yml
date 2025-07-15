@@ -13,19 +13,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # ------------------------------------------------------------------
-    # 1  Setup toolchain (kept in case you add lint / test steps later)
-    # ------------------------------------------------------------------
-    - name: Set up pnpm + Node
+    # ──────────────────────────────────────────────────────────────────────
+    # 1.  Check out the repo
+    # ──────────────────────────────────────────────────────────────────────
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    # ──────────────────────────────────────────────────────────────────────
+    # 2.  Install Node (official action) – enables cache: pnpm
+    # ──────────────────────────────────────────────────────────────────────
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: pnpm                     # speeds up pnpm installs
+
+    # ──────────────────────────────────────────────────────────────────────
+    # 3.  Install pnpm itself (no node-version arg!)
+    # ──────────────────────────────────────────────────────────────────────
+    - name: Set up pnpm
       uses: pnpm/action-setup@v2
       with:
         version: ${{ env.PNPM_VERSION }}
-        node-version: ${{ env.NODE_VERSION }}
-        run_install: false
+        run_install: false              # we don’t need “pnpm install” on the runner
 
-    # ------------------------------------------------------------------
-    # 2  Run the atomic deploy script on the droplet
-    # ------------------------------------------------------------------
+    # ──────────────────────────────────────────────────────────────────────
+    # 4.  Run the droplet’s deploy script
+    # ──────────────────────────────────────────────────────────────────────
     - name: Deploy via SSH
       uses: appleboy/ssh-action@v1.0.0
       with:
@@ -33,11 +47,11 @@ jobs:
         username:  root
         key:       ${{ secrets.DO_SSH_KEY }}
         script: |
-          /opt/deploy/portfolio.sh      # must be executable
+          /opt/deploy/portfolio.sh
 
-    # ------------------------------------------------------------------
-    # 3  Fetch the remote deploy log (always run, even on failure)
-    # ------------------------------------------------------------------
+    # ──────────────────────────────────────────────────────────────────────
+    # 5.  Always fetch the remote deploy log
+    # ──────────────────────────────────────────────────────────────────────
     - name: Fetch deploy log
       if: always()
       id: fetch_log
@@ -46,20 +60,20 @@ jobs:
         host:      ${{ secrets.DO_HOST }}
         username:  root
         key:       ${{ secrets.DO_SSH_KEY }}
-        script:    cat /var/log/portfolio-deploy.log   # script’s logfile
+        script:    cat /var/log/portfolio-deploy.log
 
-    # ------------------------------------------------------------------
-    # 4  Write the log to the runner’s filesystem
-    # ------------------------------------------------------------------
+    # ──────────────────────────────────────────────────────────────────────
+    # 6.  Write the log file on the runner
+    # ──────────────────────────────────────────────────────────────────────
     - name: Write deploy log file
       if: always()
       run: |
         mkdir -p deploy-log
         echo "${{ steps.fetch_log.outputs.stdout }}" > deploy-log/portfolio-deploy.log
 
-    # ------------------------------------------------------------------
-    # 5  Upload the log as a build artifact
-    # ------------------------------------------------------------------
+    # ──────────────────────────────────────────────────────────────────────
+    # 7.  Upload the log as an artifact
+    # ──────────────────────────────────────────────────────────────────────
     - name: Upload deploy log
       if: always()
       uses: actions/upload-artifact@v4
