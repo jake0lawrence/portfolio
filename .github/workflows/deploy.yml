@@ -13,7 +13,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # ---------- toolchain (kept for lint/test if you add steps later) ----------
+    # ------------------------------------------------------------------
+    # 1  Setup toolchain (kept in case you add lint / test steps later)
+    # ------------------------------------------------------------------
     - name: Set up pnpm + Node
       uses: pnpm/action-setup@v2
       with:
@@ -21,33 +23,43 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
         run_install: false
 
-    # ---------- run the deploy script ----------
+    # ------------------------------------------------------------------
+    # 2  Run the atomic deploy script on the droplet
+    # ------------------------------------------------------------------
     - name: Deploy via SSH
       uses: appleboy/ssh-action@v1.0.0
       with:
-        host: ${{ secrets.DO_HOST }}
-        username: root
-        key: ${{ secrets.DO_SSH_KEY }}
+        host:      ${{ secrets.DO_HOST }}
+        username:  root
+        key:       ${{ secrets.DO_SSH_KEY }}
         script: |
-          /opt/deploy/portfolio.sh
+          /opt/deploy/portfolio.sh      # must be executable
 
-    # ---------- fetch & upload the remote deploy log ----------
+    # ------------------------------------------------------------------
+    # 3  Fetch the remote deploy log (always run, even on failure)
+    # ------------------------------------------------------------------
     - name: Fetch deploy log
       if: always()
       id: fetch_log
       uses: appleboy/ssh-action@v1.0.0
       with:
-        host: ${{ secrets.DO_HOST }}
-        username: root
-        key: ${{ secrets.DO_SSH_KEY }}
-        script: cat /var/log/portfolio-deploy.log
+        host:      ${{ secrets.DO_HOST }}
+        username:  root
+        key:       ${{ secrets.DO_SSH_KEY }}
+        script:    cat /var/log/portfolio-deploy.log   # script’s logfile
 
+    # ------------------------------------------------------------------
+    # 4  Write the log to the runner’s filesystem
+    # ------------------------------------------------------------------
     - name: Write deploy log file
       if: always()
       run: |
         mkdir -p deploy-log
         echo "${{ steps.fetch_log.outputs.stdout }}" > deploy-log/portfolio-deploy.log
 
+    # ------------------------------------------------------------------
+    # 5  Upload the log as a build artifact
+    # ------------------------------------------------------------------
     - name: Upload deploy log
       if: always()
       uses: actions/upload-artifact@v4
