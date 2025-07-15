@@ -12,34 +12,33 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    # ────────────────────────────────────────────────────────────────
+    # 1.  Checkout repository
+    # ────────────────────────────────────────────────────────────────
     steps:
-    # ──────────────────────────────────────────────────────────────────────
-    # 1.  Check out the repo
-    # ──────────────────────────────────────────────────────────────────────
     - name: Checkout
       uses: actions/checkout@v4
 
-    # ──────────────────────────────────────────────────────────────────────
-    # 2.  Install Node (official action) – enables cache: pnpm
-    # ──────────────────────────────────────────────────────────────────────
+    # ────────────────────────────────────────────────────────────────
+    # 2.  Install Node (no cache arg → avoids the “pnpm not found” error)
+    # ────────────────────────────────────────────────────────────────
     - name: Set up Node
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: pnpm                     # speeds up pnpm installs
 
-    # ──────────────────────────────────────────────────────────────────────
-    # 3.  Install pnpm itself (no node-version arg!)
-    # ──────────────────────────────────────────────────────────────────────
+    # ────────────────────────────────────────────────────────────────
+    # 3.  Install pnpm CLI
+    # ────────────────────────────────────────────────────────────────
     - name: Set up pnpm
       uses: pnpm/action-setup@v2
       with:
         version: ${{ env.PNPM_VERSION }}
-        run_install: false              # we don’t need “pnpm install” on the runner
+        run_install: false          # we don’t need `pnpm install` on the runner
 
-    # ──────────────────────────────────────────────────────────────────────
-    # 4.  Run the droplet’s deploy script
-    # ──────────────────────────────────────────────────────────────────────
+    # ────────────────────────────────────────────────────────────────
+    # 4.  Run the droplet deploy script
+    # ────────────────────────────────────────────────────────────────
     - name: Deploy via SSH
       uses: appleboy/ssh-action@v1.0.0
       with:
@@ -49,9 +48,9 @@ jobs:
         script: |
           /opt/deploy/portfolio.sh
 
-    # ──────────────────────────────────────────────────────────────────────
+    # ────────────────────────────────────────────────────────────────
     # 5.  Always fetch the remote deploy log
-    # ──────────────────────────────────────────────────────────────────────
+    # ────────────────────────────────────────────────────────────────
     - name: Fetch deploy log
       if: always()
       id: fetch_log
@@ -62,18 +61,18 @@ jobs:
         key:       ${{ secrets.DO_SSH_KEY }}
         script:    cat /var/log/portfolio-deploy.log
 
-    # ──────────────────────────────────────────────────────────────────────
-    # 6.  Write the log file on the runner
-    # ──────────────────────────────────────────────────────────────────────
+    # ────────────────────────────────────────────────────────────────
+    # 6.  Save log to a file
+    # ────────────────────────────────────────────────────────────────
     - name: Write deploy log file
       if: always()
       run: |
         mkdir -p deploy-log
         echo "${{ steps.fetch_log.outputs.stdout }}" > deploy-log/portfolio-deploy.log
 
-    # ──────────────────────────────────────────────────────────────────────
+    # ────────────────────────────────────────────────────────────────
     # 7.  Upload the log as an artifact
-    # ──────────────────────────────────────────────────────────────────────
+    # ────────────────────────────────────────────────────────────────
     - name: Upload deploy log
       if: always()
       uses: actions/upload-artifact@v4
