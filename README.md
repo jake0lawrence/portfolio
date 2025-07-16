@@ -74,7 +74,7 @@ description: "One‑sentence summary for SEO & OG"
 
 1. **GitHub Actions** — lints, tests, builds on every push to `main`.
 2. **Deploy Job** — if build passes, connects over SSH to the droplet.
-3. **Droplet Script** — syncs `main`, builds into `.next-temp` then swaps to `.next`, reloads PM2 and logs to `/var/log/portfolio-deploy.log`.
+3. **Droplet Script** — syncs `main`, builds into `.next-temp` then swaps to `.next`, deletes any existing PM2 process named `portfolio` before starting it and logs to `/var/log/portfolio-deploy.log`.
 4. **NGINX** proxies `https://` traffic to the PM2 process on :3000.
 
 Infrastructure details live in [`infra-playbook.md`](infra-playbook.md).

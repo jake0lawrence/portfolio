@@ -218,10 +218,9 @@ fi
 
 # 5) Reload or start PM2
 if pm2 describe portfolio >/dev/null 2>&1; then
-  pm2 reload portfolio --update-env
-else
-  pm2 start "$PNPM" --name portfolio --cwd "$REPO_DIR" -- start
+  pm2 delete portfolio
 fi
+pm2 start "$PNPM" --name portfolio --cwd "$REPO_DIR" -- start
 
 pm2 save
 
@@ -256,7 +255,7 @@ Log rotation already provided by `pm2-logrotate` (installed automatically).
 3. journalctl -fu webhook   # optional tail (manual webhook still works)
 ```
 
-Typical deploy time: **\~50 s** (install ≈ 20 s, build ≈ 25 s, reload < 1 s).
+Typical deploy time: **\~50 s** (install ≈ 20 s, build ≈ 25 s, restart < 1 s).
 
 ---
 
@@ -285,6 +284,7 @@ Typical deploy time: **\~50 s** (install ≈ 20 s, build ≈ 25 s, rel
 
 | Date (UTC)     | Note                                                                                                           |
 | -------------- | -------------------------------------------------------------------------------------------------------------- |
+| **2025‑07‑16** | Deploy script deletes any existing PM2 process before starting to avoid `EADDRINUSE` errors. |
 | **2025‑06‑23** | Refactored deploy: moved script to `/opt/deploy`, switched to pnpm, added `.next` keep‑alive, auto PM2 reload. |
 | **2025‑06‑22** | Initial production launch, webhook + NGINX TLS, Node 20, PM2 logrotate.                                        |
 | **2025‑06‑21** | Droplet created, DNS & firewall, first manual Next.js build.                                                   |
