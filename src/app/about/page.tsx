@@ -12,7 +12,49 @@ import {
   Meta,
   Schema
 } from "@once-ui-system/core";
-import { baseURL, about, person, social } from "@/resources";
+import { baseURL, about as aboutData, person, social } from "@/resources";
+
+interface ImageData {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
+interface ExperienceData {
+  company: string;
+  timeframe: string;
+  role: string;
+  achievements: JSX.Element[];
+  images: ImageData[];
+}
+
+interface StudyData {
+  name: string;
+  description: JSX.Element;
+}
+
+interface SkillData {
+  title: string;
+  description: JSX.Element;
+  images?: ImageData[];
+}
+
+interface AboutData {
+  path: string;
+  label: string;
+  title: string;
+  description: string;
+  tableOfContent: { display: boolean; subItems: boolean };
+  avatar: { display: boolean };
+  calendar: { display: boolean; link: string };
+  intro: { display: boolean; title: string; description: JSX.Element };
+  work: { display: boolean; title: string; experiences: ExperienceData[] };
+  studies: { display: boolean; title: string; institutions: StudyData[] };
+  technical: { display: boolean; title: string; skills: SkillData[] };
+}
+
+const about = aboutData as unknown as AboutData;
 import TableOfContents from "@/components/about/TableOfContents";
 import ScheduleCallModal from "./ScheduleCallModal";
 import styles from "@/components/about/about.module.scss";
@@ -218,19 +260,14 @@ export default function About() {
                             key={index}
                             border="neutral-medium"
                             radius="m"
-                            //@ts-ignore
                             minWidth={image.width}
-                            //@ts-ignore
                             height={image.height}
                           >
                             <Media
                               enlarge
                               radius="m"
-                              //@ts-ignore
                               sizes={image.width.toString()}
-                              //@ts-ignore
                               alt={image.alt}
-                              //@ts-ignore
                               src={image.src}
                             />
                           </Flex>
@@ -287,19 +324,14 @@ export default function About() {
                             key={index}
                             border="neutral-medium"
                             radius="m"
-                            //@ts-ignore
                             minWidth={image.width}
-                            //@ts-ignore
                             height={image.height}
                           >
                             <Media
                               enlarge
                               radius="m"
-                              //@ts-ignore
                               sizes={image.width.toString()}
-                              //@ts-ignore
                               alt={image.alt}
-                              //@ts-ignore
                               src={image.src}
                             />
                           </Flex>
