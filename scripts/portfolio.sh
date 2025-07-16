@@ -38,10 +38,9 @@ fi
 
 # Reload or start PM2
 if pm2 describe portfolio >/dev/null 2>&1; then
-  pm2 reload portfolio --update-env
-else
-  pm2 start "$PNPM" --name portfolio --cwd "$REPO_DIR" -- start
+  pm2 delete portfolio
 fi
+pm2 start "$PNPM" --name portfolio --cwd "$REPO_DIR" -- start
 
 pm2 save
 
