@@ -5,12 +5,15 @@ import { Button, Flex, Heading, Input, Text, Background, Column, IconButton } fr
 import { opacity, SpacingToken } from "@once-ui-system/core";
 import { useState, useRef, useEffect } from "react";
 
-function debounce<T extends (...args: any[]) => void>(func: T, delay: number): T {
+function debounce<T extends unknown[]>(
+  func: (...args: T) => void,
+  delay: number
+): (...args: T) => void {
   let timeout: ReturnType<typeof setTimeout>;
-  return ((...args: Parameters<T>) => {
+  return (...args: T) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), delay);
-  }) as T;
+  };
 }
 
 type NewsletterProps = {

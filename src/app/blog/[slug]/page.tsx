@@ -31,10 +31,15 @@ const toStringArray = (value: unknown): string[] =>
 const safeIncludes = (
   haystack: unknown,
   needle: string
-): boolean =>
-  (Array.isArray(haystack) || typeof haystack === "string")
-    ? (haystack as any).includes(needle)
-    : false;
+): boolean => {
+  if (Array.isArray(haystack)) {
+    return haystack.includes(needle);
+  }
+  if (typeof haystack === "string") {
+    return haystack.includes(needle);
+  }
+  return false;
+};
 
 /* ──────────────────────────────────────────────
    1. Static Params
@@ -96,8 +101,8 @@ export default async function Blog({
   if (!post) notFound();
 
   /* ---------- Safety guards for meta fields ---------- */
-  // The `Metadata` type in utils doesn't include `tags`, so we cast to `any`.
-  const tags = toStringArray((post.metadata as any)?.tags);
+  // The `Metadata` type in utils doesn't include `tags`, so we cast safely.
+  const tags = toStringArray((post.metadata as { tags?: string[] }).tags);
   const isDraft = safeIncludes(tags, "draft");
 
   const avatars =
