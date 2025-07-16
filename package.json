@@ -10,7 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc -p tsconfig.json --noEmit",
-    "test": "rm -rf dist-test && tsc -p tsconfig.test.json --noEmit false --outDir dist-test && node --test dist-test/tests"
+    "test": "rm -rf dist-test && tsc -p tsconfig.test.json --noEmit false --outDir dist-test && node --test dist-test/tests/*.js"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
